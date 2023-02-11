@@ -1,4 +1,4 @@
-package com.example.dongam_board
+package com.study.dongamboard
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class DongamBoardApplication
 
 fun main(args: Array<String>) {
-	runApplication<DongamBoardApplication>(*args)
+    runApplication<DongamBoardApplication>(*args)
 }

@@ -1,1 +1,1 @@
-rootProject.name = "dongam_board"
+rootProject.name = "dongam-board"
