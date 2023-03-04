@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+      - mysql
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        show-sql: true
