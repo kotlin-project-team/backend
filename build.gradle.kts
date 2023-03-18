@@ -6,11 +6,14 @@ plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
+    kotlin("kapt") version "1.7.22"
+    kotlin("plugin.allopen") version "1.7.22"
 }
 
 group = "com.kotlin.study"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+val querydslVersion = "4.4.0"
 
 configurations {
     compileOnly {
@@ -31,6 +34,11 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // queryDSL
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 allOpen {
