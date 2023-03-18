@@ -1,11 +1,11 @@
-package com.study.dongamboard
+package com.kotlin.study.dongambackend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class DongamBoardApplication
+class DongambackendApplication
 
 fun main(args: Array<String>) {
-    runApplication<DongamBoardApplication>(*args)
+    runApplication<DongambackendApplication>(*args)
 }
