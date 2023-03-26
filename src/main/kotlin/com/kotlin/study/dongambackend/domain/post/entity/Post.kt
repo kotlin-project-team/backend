@@ -12,9 +12,9 @@ import javax.persistence.*
 @AllArgsConstructor
 @Table(name = "post")
 @Entity
-open class Post {
+class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private var id: Long? = null
 
