@@ -16,7 +16,7 @@ class Comment {
     @Column(name = "id", nullable = false)
     private var id: Long? = null
 
-    @Column(name = "device_tokeㄴn", nullable = false)
+    @Column(name = "device_token", nullable = false)
     private var deviceToken: String? = null
 
     @Column(name = "content", nullable = false)

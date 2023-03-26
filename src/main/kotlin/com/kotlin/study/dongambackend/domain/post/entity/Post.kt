@@ -1,6 +1,5 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
-import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.Getter
 import lombok.NoArgsConstructor
@@ -9,10 +8,9 @@ import javax.persistence.*
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "post")
 @Entity
-class Post {
+class Post(deviceToken: String, title: String, content: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
