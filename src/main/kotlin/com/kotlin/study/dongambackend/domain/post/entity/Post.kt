@@ -7,6 +7,7 @@ import javax.persistence.*
 
 
 // TODO: private + getter 사용 가능한지 조사하고 적용하기
+// TODO: null 관리하기
 @NoArgsConstructor
 @Table(name = "post")
 @Entity
@@ -17,7 +18,7 @@ class Post(
     var id: Long? = null,
 
     @Column(name = "device_token", nullable = false)
-    var deviceToken: String?,
+    var deviceToken: String,
 
     @Column(name = "title", nullable = false)
     var title: String,
