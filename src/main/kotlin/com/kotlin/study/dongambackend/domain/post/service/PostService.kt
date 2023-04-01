@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service
 @Service
 class PostService(val postRepository: PostRepository, val postMapper: PostMapper) {
     fun createPost(postCreateRequest: PostCreateRequest): PostResponse {
-        val post = postMapper.toCreatePost(postCreateRequest)
-        val result = postRepository.save(post);
+        val post = postMapper.createPostEntity(postCreateRequest)
+        val result = postRepository.save(post)
 
-        return result
+        return postMapper.createPostResponse(result)
     }
 }
