@@ -34,6 +34,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // queryDSL
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
