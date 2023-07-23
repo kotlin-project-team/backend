@@ -1,7 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
-import com.kotlin.study.dongambackend.domain.post.dto.PostCreateRequest
-import com.kotlin.study.dongambackend.domain.post.dto.PostResponse
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
+import com.kotlin.study.dongambackend.domain.post.dto.response.PostResponse
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 import org.springframework.stereotype.Service

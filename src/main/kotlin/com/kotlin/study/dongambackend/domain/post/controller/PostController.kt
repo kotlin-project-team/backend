@@ -1,7 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.controller
 
-import com.kotlin.study.dongambackend.domain.post.dto.PostCreateRequest
-import com.kotlin.study.dongambackend.domain.post.dto.PostResponse
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
+import com.kotlin.study.dongambackend.domain.post.dto.response.PostResponse
 import com.kotlin.study.dongambackend.domain.post.service.PostService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
