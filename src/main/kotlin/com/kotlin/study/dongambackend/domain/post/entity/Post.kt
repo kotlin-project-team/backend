@@ -1,5 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
+import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
@@ -8,30 +10,29 @@ import javax.validation.constraints.NotNull
 import javax.persistence.*
 
 @NoArgsConstructor
+@AllArgsConstructor
 @DynamicInsert
 @Table(name = "post")
 @Entity
-class Post(
+open class Post : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    var id: UInt,
+    var id: Long? = null
 
     @Column(name = "user_id", nullable = false)
-    var userId: UInt,
+    var userId: Long? = null
 
     @NotNull
-    var title: String,
+    var title: String? = null
 
-    var content: String,
-    @NotNull
-    var category: String,
+    var content: String? = null
 
-    @ColumnDefault("0")
-    var likes: Int? = 0,
+    var category: String? = null
 
     @ColumnDefault("0")
-    var views: Int? = 0,
-) {
+    var likes: Int? = 0
 
+    @ColumnDefault("0")
+    var views: Int? = 0
 }
