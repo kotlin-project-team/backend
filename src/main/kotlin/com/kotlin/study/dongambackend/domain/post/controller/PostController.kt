@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/post")
 class PostController(val postService: PostService) {
-    @PostMapping
-    fun createPost(@RequestBody postCreateRequest: PostCreateRequest): PostResponse {
-        // @RequestBody 어노테이션 안 붙이면 오류가 발생한다.
-        return postService.createPost(postCreateRequest)
-    }
+//    @PostMapping
+//    fun createPost(@RequestBody postCreateRequest: PostCreateRequest): PostResponse {
+//        // @RequestBody 어노테이션 안 붙이면 오류가 발생한다.
+//
+//    }
 }
