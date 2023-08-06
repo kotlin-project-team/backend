@@ -1,39 +1,48 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
+import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.DynamicInsert
+import javax.validation.constraints.NotNull
 import javax.persistence.*
 
-
-// TODO: private + getter 사용 가능한지 조사하고 적용하기
-// TODO: null 관리하기
 @NoArgsConstructor
+@AllArgsConstructor
+@DynamicInsert
 @Table(name = "post")
 @Entity
-class Post(
+class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    var id: Long? = null,
+    var id: Long? = null
 
-    @Column(name = "device_token", nullable = false)
-    var deviceToken: String,
+    // TODO: userId 참조 필요
+    @Column(name = "user_id", nullable = false)
+    var userId: Long? = 1
 
-    @Column(name = "title", nullable = false)
-    var title: String,
+    @NotNull
+    var title: String?
 
-    @Column(name = "content", nullable = false)
-    var content: String,
+    var content: String?
 
-    @Column(name = "likes", nullable = false)
+    var category: String?
+
     @ColumnDefault("0")
-    @Builder.Default
-    var likes: Int? = 0,
+    var likes: Int? = 0
 
-    @Column(name = "report_count", nullable = false)
     @ColumnDefault("0")
-    @Builder.Default
-    var reportCounts: Int? = 0) {
+    var views: Int? = 0
 
+    // TODO: basetimeEntity 적용
+
+    constructor(_title: String, _content: String, _category: String) {
+        title = _title
+        content = _content
+        category = _category
+    }
 }

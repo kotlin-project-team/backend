@@ -1,19 +1,23 @@
 package com.kotlin.study.dongambackend.domain.post.controller
 
-import com.kotlin.study.dongambackend.domain.post.dto.PostCreateRequest
-import com.kotlin.study.dongambackend.domain.post.dto.PostResponse
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
+import com.kotlin.study.dongambackend.domain.post.dto.response.PostResponse
+import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.service.PostService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.domain.Pageable
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/post")
-class PostController(val postService: PostService) {
+class PostController(private val postService: PostService) {
+
+    @GetMapping
+    fun getAllPost(pageable: Pageable) {
+        return postService.getAllPost(pageable)
+    }
+
     @PostMapping
-    fun createPost(@RequestBody postCreateRequest: PostCreateRequest): PostResponse {
-        // @RequestBody 어노테이션 안 붙이면 오류가 발생한다.
+    fun createPost(@RequestBody postCreateRequest: PostCreateRequest): Post {
         return postService.createPost(postCreateRequest)
     }
 }
