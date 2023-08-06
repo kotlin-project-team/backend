@@ -14,25 +14,35 @@ import javax.persistence.*
 @DynamicInsert
 @Table(name = "post")
 @Entity
-open class Post : BaseTimeEntity() {
+class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     var id: Long? = null
 
+    // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
-    var userId: Long? = null
+    var userId: Long? = 1
 
     @NotNull
-    var title: String? = null
+    var title: String?
 
-    var content: String? = null
+    var content: String?
 
-    var category: String? = null
+    var category: String?
 
     @ColumnDefault("0")
     var likes: Int? = 0
 
     @ColumnDefault("0")
     var views: Int? = 0
+
+    // TODO: basetimeEntity 적용
+
+    constructor(_title: String, _content: String, _category: String) {
+        title = _title
+        content = _content
+        category = _category
+    }
 }
