@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.NoArgsConstructor
@@ -44,5 +45,11 @@ class Post {
         title = _title
         content = _content
         category = _category
+    }
+
+    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
+        id = postId
+        title = postUpdateRequest.title
+        content = postUpdateRequest.content
     }
 }
