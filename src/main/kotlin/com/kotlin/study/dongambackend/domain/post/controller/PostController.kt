@@ -28,4 +28,9 @@ class PostController(private val postService: PostService) {
         return postService.updatePost(postUpdateRequest, postId)
     }
 
+    @DeleteMapping("/{post_id}")
+    fun deletePost(@PathVariable("post_id") postId: Long): String {
+        postService.deletePost(postId)
+        return "OK"
+    }
 }

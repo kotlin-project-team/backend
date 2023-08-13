@@ -51,9 +51,12 @@ class Post {
         category = _category
     }
 
-    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        id = postId
+    fun updatePost(postUpdateRequest: PostUpdateRequest) {
         title = postUpdateRequest.title
         content = postUpdateRequest.content
+    }
+
+    fun deletePost() {
+        isDeleted = true
     }
 }

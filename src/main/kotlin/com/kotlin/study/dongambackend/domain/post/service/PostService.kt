@@ -23,8 +23,14 @@ class PostService(val postRepository: PostRepository) {
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long): Post {
         val post = postRepository.findById(postId).get()
-        post.updatePost(postUpdateRequest, postId)
+        post.updatePost(postUpdateRequest)
         postRepository.save(post)
         return post
+    }
+
+    fun deletePost(postId: Long) {
+        val post = postRepository.findById(postId).get()
+        post.deletePost()
+        postRepository.save(post)
     }
 }
