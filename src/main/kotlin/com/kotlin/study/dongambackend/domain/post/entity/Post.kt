@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import lombok.AllArgsConstructor
 import lombok.Builder
 import lombok.NoArgsConstructor
@@ -38,11 +39,24 @@ class Post {
     @ColumnDefault("0")
     var views: Int? = 0
 
+    @Column(name = "is_deleted")
+    @ColumnDefault("false")
+    var isDeleted: Boolean = false
+
     // TODO: basetimeEntity 적용
 
     constructor(_title: String, _content: String, _category: String) {
         title = _title
         content = _content
         category = _category
+    }
+
+    fun updatePost(postUpdateRequest: PostUpdateRequest) {
+        title = postUpdateRequest.title
+        content = postUpdateRequest.content
+    }
+
+    fun deletePost() {
+        isDeleted = true
     }
 }
