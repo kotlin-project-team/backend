@@ -39,6 +39,10 @@ class Post {
     @ColumnDefault("0")
     var views: Int? = 0
 
+    @Column(name = "is_deleted")
+    @ColumnDefault("false")
+    var isDeleted: Boolean = false
+
     // TODO: basetimeEntity 적용
 
     constructor(_title: String, _content: String, _category: String) {
