@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*
 class PostController(private val postService: PostService) {
 
     @GetMapping
-    fun getAllPost(pageable: Pageable): Page<Post> {
-        return postService.getAllPost(pageable)
+    fun getAllPost(pageable: Pageable): List<Post> {
+        return postService.getAllPost(pageable).content
     }
 
     @PostMapping
