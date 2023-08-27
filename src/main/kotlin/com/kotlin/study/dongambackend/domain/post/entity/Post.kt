@@ -15,7 +15,7 @@ import javax.persistence.*
 @DynamicInsert
 @Table(name = "post")
 @Entity
-class Post {
+class Post : BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
