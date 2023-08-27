@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext
 
 @Configuration
 class QueryDslConfig {
+
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
