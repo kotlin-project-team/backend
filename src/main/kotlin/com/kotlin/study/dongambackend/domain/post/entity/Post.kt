@@ -20,28 +20,28 @@ class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    private var id: Long? = null
+    var id: Long? = null
 
     // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
-    private var userId: Long? = 1
+    var userId: Long? = 1
 
     @NotNull
-    private var title: String?
+    var title: String?
 
-    private var content: String?
+    var content: String?
 
-    private var category: String?
-
-    @ColumnDefault("0")
-    private var likes: Int? = 0
+    var category: String?
 
     @ColumnDefault("0")
-    private var views: Int? = 0
+    var likes: Int? = 0
+
+    @ColumnDefault("0")
+    var views: Int? = 0
 
     @Column(name = "is_deleted")
     @ColumnDefault("false")
-    private var isDeleted: Boolean = false
+    var isDeleted: Boolean = false
 
     // TODO: basetimeEntity 적용
 

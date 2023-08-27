@@ -7,6 +7,7 @@ import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 // TODO: 추후 Mapper로 수정
@@ -14,6 +15,10 @@ class PostService(val postRepository: PostRepository) {
 
     fun getAllPost(pageable: Pageable): Page<Post> {
         return postRepository.findAll(pageable)
+    }
+
+    fun getPostById(postId: Long): Optional<Post> {
+        return postRepository.findById(postId)
     }
 
     fun createPost(postCreateRequest: PostCreateRequest): Post {
