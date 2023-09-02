@@ -4,6 +4,4 @@ data class PostCreateRequest (
     var title: String,
     var content: String,
     var category: String,
-) {
-
-}
+)

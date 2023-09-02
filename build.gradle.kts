@@ -35,11 +35,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-
-    // queryDSL
-    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
-    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("com.querydsl:querydsl-jpa:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
 }
 
 allOpen {

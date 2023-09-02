@@ -8,6 +8,4 @@ data class PostResponse(
     var category: String,
     var likes: Int,
     var views: Int
-) {
-
-}
+)
