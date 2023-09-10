@@ -17,7 +17,6 @@ class PostController(private val postService: PostService) {
 
     @GetMapping
     fun getAllPost(pageable: Pageable): ResponseEntity<List<Post>> {
-        println(pageable)
         val posts = postService.getAllPost(pageable)
         return ResponseEntity.ok().body(posts)
     }
