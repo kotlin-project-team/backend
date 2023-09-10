@@ -7,12 +7,13 @@ import lombok.Builder
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.SQLDelete
 import javax.validation.constraints.NotNull
 import javax.persistence.*
 
 @NoArgsConstructor
-@AllArgsConstructor
 @DynamicInsert
+@SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE id = ?")
 @Table(name = "post")
 @Entity
 class Post : BaseTimeEntity {
@@ -43,8 +44,6 @@ class Post : BaseTimeEntity {
     @ColumnDefault("false")
     var isDeleted: Boolean = false
 
-    // TODO: basetimeEntity 적용
-
     constructor(_title: String, _content: String, _category: String) {
         title = _title
         content = _content
@@ -54,9 +53,5 @@ class Post : BaseTimeEntity {
     fun updatePost(postUpdateRequest: PostUpdateRequest) {
         title = postUpdateRequest.title
         content = postUpdateRequest.content
-    }
-
-    fun deletePost() {
-        isDeleted = true
     }
 }
