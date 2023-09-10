@@ -36,7 +36,7 @@ class PostService(val postRepository: PostRepository, val postQueryDslRepository
 
     fun deletePost(postId: Long) {
         val post = postRepository.findById(postId).get()
-        post.deletePost()
-        postRepository.save(post)
+        // TODO: 예외처리
+        postRepository.deleteById(post.id!!)
     }
 }
