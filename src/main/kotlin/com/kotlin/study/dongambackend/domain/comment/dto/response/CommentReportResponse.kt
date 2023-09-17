@@ -2,5 +2,5 @@ package com.kotlin.study.dongambackend.domain.comment.dto.response
 
 data class CommentReportResponse (
     val reason: String,
-    val is_solved: Boolean
+    val isSolved: Boolean
 )
