@@ -23,7 +23,7 @@ class PostService(val postRepository: PostRepository, val postQueryDslRepository
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Post {
-        val post = Post(postCreateRequest.title, postCreateRequest.content, postCreateRequest.category, userId)
+        val post = Post(userId, postCreateRequest.title, postCreateRequest.content, postCreateRequest.category)
         return postRepository.save(post)
     }
 

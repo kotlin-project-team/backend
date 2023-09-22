@@ -14,41 +14,33 @@ import javax.persistence.*
 @NoArgsConstructor
 @DynamicInsert
 @SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE id = ?")
-@Table(name = "post")
 @Entity
 class Post(
-    title: String,
-    content: String,
-    category: String,
-    userId: Long
-) : BaseTimeEntity() {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
-    val id: Long? = null
-
     // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
-    val userId: Long = userId
+    val userId: Long,
 
     @NotNull
-    var title: String = title
+    var title: String,
 
-    var content: String = content
+    var content: String,
 
-    val category: String = category
-
-    @ColumnDefault("0")
-    val likes: Int? = 0
+    val category: String,
 
     @ColumnDefault("0")
-    val views: Int? = 0
+    val likes: Int? = 0,
+
+    @ColumnDefault("0")
+    val views: Int? = 0,
 
     @Column(name = "is_deleted")
     @ColumnDefault("false")
-    val isDeleted: Boolean = false
+    val isDeleted: Boolean? = false,
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    val id: Long? = null
+) : BaseTimeEntity() {
     fun updatePost(postUpdateRequest: PostUpdateRequest) {
         title = postUpdateRequest.title
         content = postUpdateRequest.content
