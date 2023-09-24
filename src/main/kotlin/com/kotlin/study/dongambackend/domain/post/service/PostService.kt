@@ -22,8 +22,8 @@ class PostService(val postRepository: PostRepository, val postQueryDslRepository
         return postRepository.findById(postId)
     }
 
-    fun createPost(postCreateRequest: PostCreateRequest): Post {
-        val post = Post(postCreateRequest.title, postCreateRequest.content, postCreateRequest.category)
+    fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Post {
+        val post = Post(userId, postCreateRequest.title, postCreateRequest.content, postCreateRequest.category)
         return postRepository.save(post)
     }
 
