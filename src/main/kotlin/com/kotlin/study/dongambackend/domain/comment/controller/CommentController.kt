@@ -1,6 +1,5 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.config.BaseResponse
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
@@ -19,17 +18,19 @@ class CommentController(private val commentService: CommentService) {
     @PostMapping
     fun createComment(
         @RequestBody commentCreateRequest: CommentCreateRequest
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<Unit> {
+
         val commentId = commentService.createComment(commentCreateRequest)
         return ResponseEntity.created(URI.create("/api/comment/${commentId}")).build()
     }
 
     @PostMapping("/report/{commentId}")
     fun reportComment(
+        @PathVariable commentId: Long,
         @RequestBody commentReportRequest: CommentReportRequest
     ): ResponseEntity<CommentReportResponse> {
-        val reportId = commentService.reportComment(commentReportRequest)
-        return ResponseEntity.created(URI.create("/api/comment/${reportId}")).build()
+        val reportId = commentService.reportComment(commentId, commentReportRequest)
+        return ResponseEntity.created(URI.create("/api/comment/$reportId")).build()
     }
 
 
@@ -43,10 +44,13 @@ class CommentController(private val commentService: CommentService) {
     fun updateComment(
         @RequestBody commentUpdateRequest: CommentUpdateRequest,
         @PathVariable commentId: Long
-    ): ResponseEntity<BaseResponse> {
+    ): ResponseEntity<Unit> {
         val result = commentService.updateComment(commentUpdateRequest, commentId)
-        return ResponseEntity.status(result.code).body(result)
+
+        return ResponseEntity.ok().build()
     }
+
+
 
     @DeleteMapping("/{commentId}")
     fun deleteComment(@PathVariable commentId: Long): ResponseEntity<Unit> {

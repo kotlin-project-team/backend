@@ -3,7 +3,7 @@ package com.kotlin.study.dongambackend.domain.comment.entity
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import javax.persistence.*
 
-@Table(name = "commentReport")
+@Table(name = "comment_report")
 @Entity
 class ReportComment : BaseTimeEntity {
 
@@ -25,9 +25,10 @@ class ReportComment : BaseTimeEntity {
 
     var reason: String? = null
 
-    constructor(_reason: String, _isSolved: Boolean) {
+    constructor(_reason: String, _isSolved: Boolean, _commentId: Long) {
         reason = _reason
         isSolved = _isSolved
+        commentId = _commentId
     }
 
 }

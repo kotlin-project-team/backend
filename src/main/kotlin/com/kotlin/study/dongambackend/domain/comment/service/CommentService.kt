@@ -1,7 +1,6 @@
 package com.kotlin.study.dongambackend.domain.comment.service
 
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
-import com.kotlin.study.dongambackend.common.config.BaseResponse
 import com.kotlin.study.dongambackend.common.config.ResponseStatus
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
@@ -24,12 +23,12 @@ class CommentService(private val commentRepository: CommentRepository, private v
         return comment.id
     }
 
-    fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): BaseResponse {
+    fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
         val comment = commentRepository.findById(commentId).get()
         comment.updateComment(commentUpdateRequest)
         commentRepository.save(comment)
 
-        return BaseResponse(ResponseStatus.SUCCESS)
+        return comment
     }
 
     fun deleteComment(commentId: Long) {
@@ -37,16 +36,14 @@ class CommentService(private val commentRepository: CommentRepository, private v
         commentRepository.deleteById(comment.id!!)
     }
 
-    fun reportComment(commentReportRequest: CommentReportRequest): Long? {
-        val reportComment = ReportComment(commentReportRequest.reason, commentReportRequest.isSolved)
+    fun reportComment(commentId: Long, commentReportRequest: CommentReportRequest): Long? {
+        val reportComment = ReportComment(commentReportRequest.reason, commentReportRequest.isSolved, commentId)
         commentReportRepository.save(reportComment)
 
         return reportComment.id
     }
 
     fun getCommentById(commentId: Long): Optional<Comment> {
-
-        BaseResponse(ResponseStatus.SUCCESS)
         return commentRepository.findById(commentId)
     }
 }
