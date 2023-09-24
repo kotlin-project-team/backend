@@ -1,24 +1,48 @@
 package com.kotlin.study.dongambackend.domain.comment.entity
 
-import lombok.AllArgsConstructor
+import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import lombok.Getter
 import lombok.NoArgsConstructor
+import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.DynamicInsert
 import javax.persistence.*
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@DynamicInsert
 @Table(name = "comment")
 @Entity
-class Comment {
+class Comment : BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    private var id: Long? = null
+    var id: Long? = null
 
-    @Column(name = "device_token", nullable = false)
-    private var deviceToken: String? = null
+    // TODO: userId 참조 필요
+    @Column(name = "user_id", nullable = false)
+    var userId: Long? = 1
 
-    @Column(name = "content", nullable = false)
-    private var content: String? = null
+    // TODO: postId 참조 필요
+    @Column(name = "post_id", nullable = false)
+    var postId: Long? = 1
+
+    var content: String? = null
+
+    @Column(name = "is_deleted")
+    @ColumnDefault("false")
+    var isDeleted: Boolean = false
+
+    constructor(_content: String) {
+        content = _content
+    }
+
+    fun updateComment(commnetUpdateRequest: CommentUpdateRequest) {
+        content = commnetUpdateRequest.content
+    }
+
+    fun deleteComment() {
+        isDeleted = true
+    }
 }
