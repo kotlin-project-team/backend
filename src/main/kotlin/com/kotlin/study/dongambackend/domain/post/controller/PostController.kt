@@ -5,7 +5,6 @@ import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.service.PostService
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -22,7 +21,7 @@ class PostController(private val postService: PostService) {
     }
 
     @GetMapping("/{postId}")
-    fun getPostById(@PathVariable postId: Long): ResponseEntity<Optional<Post>> {
+    fun getPostById(@PathVariable postId: Long): ResponseEntity<Post> {
         val post = postService.getPostById(postId)
         return ResponseEntity.ok().body(post)
     }
@@ -30,8 +29,8 @@ class PostController(private val postService: PostService) {
     @PostMapping
     fun createPost(@RequestBody postCreateRequest: PostCreateRequest): ResponseEntity<Unit> {
         val userId = 1L
-        val result = postService.createPost(postCreateRequest, userId)
-        return ResponseEntity.created(URI.create("/api/post/${result.id}")).build()
+        val postId = postService.createPost(postCreateRequest, userId)
+        return ResponseEntity.created(URI.create("/api/post/${postId}")).build()
     }
 
     @PatchMapping("/{postId}")

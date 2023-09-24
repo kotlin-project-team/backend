@@ -18,20 +18,19 @@ class PostService(val postRepository: PostRepository, val postQueryDslRepository
         return postQueryDslRepository.findAllPost(pageable)
     }
 
-    fun getPostById(postId: Long): Optional<Post> {
-        return postRepository.findById(postId)
+    fun getPostById(postId: Long): Post {
+        return postRepository.findById(postId).get()
     }
 
-    fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Post {
+    fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
         val post = Post(userId, postCreateRequest.title, postCreateRequest.content, postCreateRequest.category)
-        return postRepository.save(post)
+        return postRepository.save(post).id
     }
 
-    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long): Post {
+    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
         val post = postRepository.findById(postId).get()
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
-        return post
     }
 
     fun deletePost(postId: Long) {
