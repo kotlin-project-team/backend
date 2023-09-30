@@ -12,6 +12,7 @@ import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 class PostService(
@@ -21,10 +22,12 @@ class PostService(
     val postMapper: PostMapper
 ) {
 
+    @Transactional(readOnly = true)
     fun getAllPost(pageable: Pageable): List<Post> {
         return postQueryDslRepository.findAllPost(pageable)
     }
 
+    @Transactional(readOnly=true)
     fun getPostById(postId: Long): Post {
         return postRepository.findById(postId).orElseThrow()
     }
