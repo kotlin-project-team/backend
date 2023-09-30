@@ -27,7 +27,7 @@ class PostService(
     }
 
     fun getPostById(postId: Long): Post {
-        return postRepository.findById(postId).get()
+        return findPostById(postId)
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
@@ -36,40 +36,31 @@ class PostService(
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        val post = postRepository.findById(postId)
-
-        if (isExisted(post)) {
-            post.get().updatePost(postUpdateRequest)
-            postRepository.save(post.get())
-        }
+        val post = findPostById(postId)
+        post.updatePost(postUpdateRequest)
+        postRepository.save(post)
     }
 
     fun deletePost(postId: Long) {
-        val post = postRepository.findById(postId)
-        if (isExisted(post)) {
+        if (isExisted(postId)) {
             postRepository.deleteById(postId)
         }
     }
 
     fun clickPostLike(postId: Long, userId: Long) {
-        val post = postRepository.findById(postId)
-        val postLike = postLikeRepository.findById(userId, postId)
-
-        if (isExisted(post)) {
-            if (isExisted(postLike)) {
-                postLike.get().updatePostLike()
-                postLikeRepository.save(postLike.get())
-            } else {
-                postLikeRepository.save(PostLike(PostLikeKey(userId, postId)))
-            }
-        }
+        // TODO: 좋아요 고민..
     }
 
-    private fun <T> isExisted(findResult: Optional<T>): Boolean {
+    private fun findPostById(postId: Long): Post {
+        return postRepository.findById(postId).orElseThrow()
+    }
+
+    private fun isExisted(postId: Long): Boolean {
+        val findResult = postRepository.findById(postId)
+
         if (findResult.isPresent) {
             return true
         }
-
         return false
     }
 }
