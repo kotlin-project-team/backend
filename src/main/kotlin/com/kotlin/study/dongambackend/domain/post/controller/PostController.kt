@@ -48,6 +48,6 @@ class PostController(private val postService: PostService) {
     @PostMapping("/like/{postId}")
     fun clickPostLike(@PathVariable postId: Long): ResponseEntity<Unit> {
         postService.clickPostLike(postId, 1L)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.created(URI.create("/api/post/like/${postId}")).build()
     }
 }

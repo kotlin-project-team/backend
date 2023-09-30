@@ -1,17 +1,17 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.entity.Post
+import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import com.kotlin.study.dongambackend.domain.post.repository.PostLikeRepository
 import com.kotlin.study.dongambackend.domain.post.repository.PostQueryDslRepository
 import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
+
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.util.*
-import javax.persistence.EntityNotFoundException
-
 
 @Service
 class PostService(
@@ -47,7 +47,13 @@ class PostService(
     }
 
     fun clickPostLike(postId: Long, userId: Long) {
-        // TODO: 좋아요 고민..
+        if (isExistedPost(postId)) {
+            val postLike = postLikeRepository.findById(userId, postId).orElse(
+                PostLike(PostLikeKey(userId, postId))
+            )
+            postLike.updatePostLike()
+            postLikeRepository.save(postLike)
+        }
     }
 
     fun isExistedPost(postId: Long): Boolean {
