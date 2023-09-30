@@ -17,7 +17,7 @@ class PostController(private val postService: PostService) {
 
     @GetMapping
     fun getAllPost(pageable: Pageable): ResponseEntity<List<Post>> {
-        val posts = postService.getAllPost(pageable).content
+        val posts = postService.getAllPost(pageable)
         return ResponseEntity.ok().body(posts)
     }
 
@@ -29,7 +29,8 @@ class PostController(private val postService: PostService) {
 
     @PostMapping
     fun createPost(@RequestBody postCreateRequest: PostCreateRequest): ResponseEntity<Unit> {
-        val result = postService.createPost(postCreateRequest)
+        val userId = 1L
+        val result = postService.createPost(postCreateRequest, userId)
         return ResponseEntity.created(URI.create("/api/post/${result.id}")).build()
     }
 
