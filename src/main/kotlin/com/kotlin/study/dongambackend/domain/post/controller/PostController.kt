@@ -44,4 +44,10 @@ class PostController(private val postService: PostService) {
         postService.deletePost(postId)
         return ResponseEntity.ok().build()
     }
+
+    @PostMapping("/like/{postId}")
+    fun clickPostLike(@PathVariable postId: Long): ResponseEntity<Unit> {
+        postService.clickPostLike(postId, 1L);
+        return ResponseEntity.ok().build()
+    }
 }
