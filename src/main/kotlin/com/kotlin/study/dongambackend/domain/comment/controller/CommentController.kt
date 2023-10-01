@@ -58,6 +58,4 @@ class CommentController(private val commentService: CommentService) {
         }
 
     }
-
-
 }

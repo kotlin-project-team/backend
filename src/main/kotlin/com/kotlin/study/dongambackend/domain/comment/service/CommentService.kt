@@ -12,7 +12,6 @@ import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepositor
 import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Service
 import java.io.IOException
-import java.util.*
 
 @Service
 @Slf4j
@@ -36,12 +35,12 @@ class CommentService(private val commentRepository: CommentRepository, private v
     fun deleteComment(commentId: Long) {
         try {
             val comment = commentRepository.findById(commentId).get()
+            // TODO: !!가 없는 경우 처리
             commentRepository.deleteById(comment.id!!)
         } catch (e: IOException) {
             // TODO: IOException이 아닌 로그인 여부에 따른 처리로 변경.
             throw BaseException(ResponseStatus.UNAUTHORIZED);
         }
-
     }
 
     fun reportComment(commentId: Long, commentReportRequest: CommentReportRequest): Long? {
