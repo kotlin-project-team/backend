@@ -16,6 +16,7 @@ import javax.persistence.*
 @SQLDelete(sql = "UPDATE post SET is_deleted = true WHERE id = ?")
 @Entity
 class Post(
+
     // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
     val userId: Long,
@@ -41,6 +42,7 @@ class Post(
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long? = null
 ) : BaseTimeEntity() {
+
     fun updatePost(postUpdateRequest: PostUpdateRequest) {
         title = postUpdateRequest.title
         content = postUpdateRequest.content
