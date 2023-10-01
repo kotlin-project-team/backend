@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.comment.service
 
+import com.kotlin.study.dongambackend.common.config.BaseException
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.common.config.ResponseStatus
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
@@ -10,7 +11,7 @@ import com.kotlin.study.dongambackend.domain.comment.repository.CommentReportRep
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepository
 import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Service
-import java.util.*
+import java.io.IOException
 
 @Service
 @Slf4j
@@ -32,8 +33,14 @@ class CommentService(private val commentRepository: CommentRepository, private v
     }
 
     fun deleteComment(commentId: Long) {
-        val comment = commentRepository.findById(commentId).get()
-        commentRepository.deleteById(comment.id!!)
+        try {
+            val comment = commentRepository.findById(commentId).get()
+            // TODO: !!가 없는 경우 처리
+            commentRepository.deleteById(comment.id!!)
+        } catch (e: IOException) {
+            // TODO: IOException이 아닌 로그인 여부에 따른 처리로 변경.
+            throw BaseException(ResponseStatus.UNAUTHORIZED);
+        }
     }
 
     fun reportComment(commentId: Long, commentReportRequest: CommentReportRequest): Long? {
@@ -41,9 +48,5 @@ class CommentService(private val commentRepository: CommentRepository, private v
         commentReportRepository.save(reportComment)
 
         return reportComment.id
-    }
-
-    fun getCommentById(commentId: Long): Optional<Comment> {
-        return commentRepository.findById(commentId)
     }
 }
