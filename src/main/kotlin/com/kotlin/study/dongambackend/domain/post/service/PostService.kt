@@ -11,6 +11,7 @@ import com.kotlin.study.dongambackend.domain.post.repository.PostQueryDslReposit
 import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,9 @@ class PostService(
     }
 
     @Transactional(readOnly = true)
-    fun getPostById(postId: Long): Post {
-        return postRepository.findById(postId).orElseThrow()
+    fun getPostById(postId: Long): Post? {
+        return postRepository.findByIdOrNull(postId)
+            ?: throw NoSuchElementException()
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
@@ -38,7 +40,8 @@ class PostService(
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        val post = postRepository.findById(postId).orElseThrow()
+        val post = postRepository.findByIdOrNull(postId)
+            ?: throw NoSuchElementException()
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
