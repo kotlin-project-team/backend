@@ -27,7 +27,7 @@ class PostService(
         return postQueryDslRepository.findAllPost(pageable)
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     fun getPostById(postId: Long): Post {
         return postRepository.findById(postId).orElseThrow()
     }
@@ -51,9 +51,7 @@ class PostService(
 
     fun clickPostLike(postId: Long, userId: Long) {
         if (isExistedPost(postId)) {
-            val postLike = postLikeRepository.findById(userId, postId).orElse(
-                PostLike(PostLikeKey(userId, postId))
-            )
+            val postLike = postLikeRepository.findById(userId, postId).orElseGet{ PostLike(PostLikeKey(userId, postId)) }
             postLike.updatePostLike()
             postLikeRepository.save(postLike)
         }
