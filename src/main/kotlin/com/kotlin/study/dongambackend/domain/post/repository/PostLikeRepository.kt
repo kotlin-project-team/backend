@@ -11,5 +11,5 @@ interface PostLikeRepository : JpaRepository<PostLike, Long> {
         nativeQuery = true,
         value = "SELECT * FROM post_like WHERE user_id = :userId AND post_id = :postId"
     )
-    fun findById(userId: Long, postId: Long): Optional<PostLike>
+    fun findById(userId: Long, postId: Long): PostLike?
 }
