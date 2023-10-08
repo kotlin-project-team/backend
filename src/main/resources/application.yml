@@ -10,4 +10,9 @@ spring:
         show_sql: true
         format_sql: true   # sql 출력문의 모양을 잡아준다.
         use_sql_comments: true   # 콘솔에 표시되는 쿼리문 위에 어떤 실행을 하려는지 힌트 표시, 주석 표시
-    generate-ddl: true   # 앱 시작 시 @Entity로 정의한 테이브르이 create문 실행
+    generate-ddl: true   # 앱 시작 시 @Entity로 정의한 테이블의 create문 실행
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
