@@ -6,5 +6,5 @@ import lombok.Getter
 @Getter
 @AllArgsConstructor
 class BaseException(status: ResponseStatus) : Exception() {
-    val status: ResponseStatus = ResponseStatus.NOT_FOUND
+    val status: ResponseStatus = ResponseStatus.INTERNAL_SERVER_ERROR
 }
