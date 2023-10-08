@@ -20,11 +20,8 @@ class CommentService(private val commentRepository: CommentRepository, private v
         val comment = Comment(commentCreateRequest.content)
         // TODO: Unauthorized 처리
         comment.postId ?: throw BaseException(ResponseStatus.NOT_FOUND)
-        try {
-            commentRepository.save(comment)
-        } catch (e: BaseException) {
-            throw BaseException(ResponseStatus.INTERNAL_SERVER_ERROR)
-        }
+        commentRepository.save(comment)
+
         return comment.id
     }
 
@@ -33,34 +30,23 @@ class CommentService(private val commentRepository: CommentRepository, private v
         // TODO: Unauthorized 및 ForbiddenToken 처리
         comment.postId ?: throw BaseException(ResponseStatus.NOT_FOUND)
         comment.updateComment(commentUpdateRequest)
-        try {
-            commentRepository.save(comment)
-        } catch (e: BaseException) {
-            throw BaseException(ResponseStatus.INTERNAL_SERVER_ERROR)
-        }
+        commentRepository.save(comment)
 
         return comment
     }
 
     fun deleteComment(commentId: Long) {
-        val comment = commentRepository.findById(commentId).orElseGet { throw BaseException(ResponseStatus.BAD_REQUEST) }
+        val comment = commentRepository.findById(commentId).orElseThrow { BaseException(ResponseStatus.BAD_REQUEST) }
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        try {
-            val commentId = comment.id ?: throw BaseException(ResponseStatus.NOT_FOUND)
-            commentRepository.deleteById(commentId)
-        } catch (e: BaseException) {
-            throw BaseException(ResponseStatus.INTERNAL_SERVER_ERROR)
-        }
+        val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatus.NOT_FOUND)
+        commentRepository.deleteById(commentIdToDelete)
     }
 
     fun reportComment(commentId: Long, commentReportRequest: CommentReportRequest): Long? {
         val reportComment = ReportComment(commentReportRequest.reason, commentReportRequest.isSolved, commentId)
         // TODO: 자신의 댓글인 경우 / Unauthorized 처리
-        try {
-            commentReportRepository.save(reportComment)
-        } catch (e: BaseException) {
-            throw BaseException(ResponseStatus.INTERNAL_SERVER_ERROR)
-        }
+        commentReportRepository.save(reportComment)
+
         return reportComment.id
     }
 }
