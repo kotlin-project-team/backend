@@ -1,26 +1,22 @@
 CREATE OR REPLACE FUNCTION like_count() RETURNS TRIGGER AS $trigger_post_like_count$
 DECLARE
-    count bigint;
+    count BIGINT;
 BEGIN
-    if(TG_OP = 'INSERT') then
-        select count(*) into count from post_like where post_id = new.post_id AND is_deleted = false;
-        update post set likes = count where id = new.post_id AND is_deleted = false;
-        raise notice 'this is %',count;
-        raise notice 'this is %',new.post_id;
-        return new;
-    elsif(TG_OP = 'UPDATE') then
-        select count(*) into count from post_like where post_id = old.post_id AND is_deleted = false;
-        update post set likes = count where id = old.post_id AND is_deleted = false;
-        raise notice 'this is %',count;
-        raise notice 'this is %',old.post_id;
-        return old;
-    end if;
-    return null;
+    IF(TG_OP = 'INSERT') THEN
+        SELECT COUNT(*) INTO count FROM post_like WHERE post_id = new.post_id AND is_deleted = false;
+        UPDATE post SET likes = count WHERE id = new.post_id AND is_deleted = false;
+        RETURN new;
+    ELSIF(TG_OP = 'UPDATE') THEN
+        SELECT COUNT(*) INTO count FROM post_like WHERE post_id = old.post_id AND is_deleted = false;
+        UPDATE post SET likes = count WHERE id = old.post_id AND is_deleted = false;
+        RETURN old;
+    END if;
+    RETURN NULL;
 END;
-$trigger_post_like_count$ language plpgsql;;
+$trigger_post_like_count$ LANGUAGE plpgsql;;
 
-DROP TRIGGER IF EXISTS trigger_post_like_count ON post;
+DROP TRIGGER IF EXISTS trigger_post_like_count ON post_like;
 
-create trigger trigger_post_like_count
-after insert or update on post_like
-for each row execute procedure like_count();
+CREATE TRIGGER trigger_post_like_count
+AFTER INSERT OR UPDATE on post_like
+FOR EACH ROW EXECUTE PROCEDURE  like_count();
