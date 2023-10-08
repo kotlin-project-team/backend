@@ -54,7 +54,8 @@ class PostService(
 
     fun clickPostLike(postId: Long, userId: Long) {
         if (isExistedPost(postId)) {
-            val postLike = postLikeRepository.findById(userId, postId).orElseGet{ PostLike(PostLikeKey(userId, postId)) }
+            val postLike = postLikeRepository.findById(userId, postId)
+                ?: PostLike(PostLikeKey(userId, postId))
             postLike.updatePostLike()
             postLikeRepository.save(postLike)
         }
