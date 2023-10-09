@@ -13,10 +13,10 @@ class PostLike(
     val id: PostLikeKey,
 
     @Column(name = "is_deleted", nullable = false)
-    var isDeleted: Boolean? = false
+    var isDeleted: Boolean? = null
 ) : BaseTimeEntity() {
 
     fun updatePostLike() {
-        this.isDeleted = this.isDeleted?.not() ?: false
+        this.isDeleted = if (this.isDeleted == null) false else !this.isDeleted!!
     }
 }
