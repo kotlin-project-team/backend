@@ -6,9 +6,11 @@ import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.service.PostService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.util.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/post")
@@ -27,14 +29,14 @@ class PostController(private val postService: PostService) {
     }
 
     @PostMapping
-    fun createPost(@RequestBody postCreateRequest: PostCreateRequest): ResponseEntity<Unit> {
+    fun createPost(@Valid @RequestBody postCreateRequest: PostCreateRequest): ResponseEntity<Unit> {
         val userId = 1L
         val postId = postService.createPost(postCreateRequest, userId)
         return ResponseEntity.created(URI.create("/api/post/${postId}")).build()
     }
 
     @PatchMapping("/{postId}")
-    fun updatePost(@RequestBody postUpdateRequest: PostUpdateRequest, @PathVariable postId: Long): ResponseEntity<Unit> {
+    fun updatePost(@Valid @RequestBody postUpdateRequest: PostUpdateRequest, @PathVariable postId: Long): ResponseEntity<Unit> {
         postService.updatePost(postUpdateRequest, postId)
         return ResponseEntity.ok().build()
     }
