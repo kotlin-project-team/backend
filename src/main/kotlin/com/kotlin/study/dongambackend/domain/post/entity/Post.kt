@@ -23,9 +23,9 @@ class Post(
     val userId: Long,
 
     @NotNull
-    var title: String,
+    var title: String?,
 
-    var content: String,
+    var content: String?,
 
     @NotNull
     @Enumerated(EnumType.STRING)
