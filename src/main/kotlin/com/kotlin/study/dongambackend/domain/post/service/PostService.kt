@@ -3,6 +3,7 @@ package com.kotlin.study.dongambackend.domain.post.service
 import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
+import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
@@ -24,7 +25,7 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable): List<Post> {
+    fun getAllPost(pageable: Pageable): List<PostCategoryFreeResponse> {
         return postQueryDslRepository.findAllPost(pageable)
     }
 
