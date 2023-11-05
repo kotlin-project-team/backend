@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
@@ -25,8 +26,8 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable): List<PostCategoryFreeResponse> {
-        return postQueryDslRepository.findAllPost(pageable)
+    fun getAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
+        return postQueryDslRepository.findAllPost(pageable, category)
     }
 
     @Transactional(readOnly = true)
