@@ -28,7 +28,7 @@ class PostController(private val postService: PostService) {
         @RequestParam(value = "category", required = true)
         @ValidateCategory(enumClass = BoardCategoryType::class) category: BoardCategoryType
     ): ResponseEntity<List<PostCategoryFreeResponse>> {
-        val posts = postService.getAllPost(pageable)
+        val posts = postService.getAllPost(pageable, category)
         return ResponseEntity.ok().body(posts)
     }
 
