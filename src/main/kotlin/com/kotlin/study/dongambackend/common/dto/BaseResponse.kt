@@ -1,6 +1,7 @@
-package com.kotlin.study.dongambackend.common.config
+package com.kotlin.study.dongambackend.common.dto
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import com.kotlin.study.dongambackend.common.type.ResponseStatus
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 

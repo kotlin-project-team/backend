@@ -1,8 +1,8 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.config.BaseException
-import com.kotlin.study.dongambackend.common.config.BaseResponse
-import com.kotlin.study.dongambackend.common.config.ResponseStatus
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.type.ResponseStatus
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
