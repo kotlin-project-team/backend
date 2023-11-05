@@ -1,4 +1,4 @@
-package com.kotlin.study.dongambackend.common.config
+package com.kotlin.study.dongambackend.common.type
 
 enum class ResponseStatus(val code: Int, val statusMsg: String) {
     SUCCESS(200, "OK"),

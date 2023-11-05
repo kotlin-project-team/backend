@@ -1,5 +1,6 @@
-package com.kotlin.study.dongambackend.common.config
+package com.kotlin.study.dongambackend.common.exception
 
+import com.kotlin.study.dongambackend.common.type.ResponseStatus
 import lombok.AllArgsConstructor
 import lombok.Getter
 
