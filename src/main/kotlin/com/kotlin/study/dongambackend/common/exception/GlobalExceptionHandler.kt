@@ -1,4 +1,4 @@
-package com.kotlin.study.dongambackend.common.config
+package com.kotlin.study.dongambackend.common.exception
 
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
 import com.kotlin.study.dongambackend.common.exception.BaseException
