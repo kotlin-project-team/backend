@@ -1,7 +1,7 @@
 package com.kotlin.study.dongambackend.common.dto
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
-import com.kotlin.study.dongambackend.common.type.ResponseStatus
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 
@@ -13,10 +13,10 @@ data class BaseResponse<T>(
 ) {
 
     // success
-    constructor(status: ResponseStatus) : this(status.code, status.statusMsg, null)
-    constructor(result: T, status: ResponseStatus) : this(status.code, status.statusMsg, result)
+    constructor(status: ResponseStatusType) : this(status.code, status.statusMessage, null)
+    constructor(result: T, status: ResponseStatusType) : this(status.code, status.statusMessage, result)
     // fail
-    constructor(status: ResponseStatus, isFailure: Boolean = false) : this(status.code, status.statusMsg,null)
+    constructor(status: ResponseStatusType, isFailure: Boolean = false) : this(status.code, status.statusMessage,null)
 
     fun convert(): ResponseEntity<BaseResponse<T>> {
         val headers = HttpHeaders()
@@ -24,4 +24,3 @@ data class BaseResponse<T>(
         return ResponseEntity.status(code).headers(headers).body(this)
     }
 }
-
