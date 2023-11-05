@@ -1,7 +1,9 @@
 package com.kotlin.study.dongambackend.domain.post.dto.entitykey
 
 import lombok.Getter
+
 import java.io.Serializable
+
 import javax.persistence.Embeddable
 
 @Embeddable

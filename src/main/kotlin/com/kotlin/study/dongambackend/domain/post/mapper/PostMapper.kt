@@ -2,6 +2,7 @@ package com.kotlin.study.dongambackend.domain.post.mapper
 
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.entity.Post
+
 import org.springframework.stereotype.Component
 
 @Component

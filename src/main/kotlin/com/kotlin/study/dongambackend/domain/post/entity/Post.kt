@@ -3,12 +3,13 @@ package com.kotlin.study.dongambackend.domain.post.entity
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
-import lombok.AllArgsConstructor
-import lombok.Builder
+
 import lombok.NoArgsConstructor
+
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
+
 import javax.validation.constraints.NotNull
 import javax.persistence.*
 

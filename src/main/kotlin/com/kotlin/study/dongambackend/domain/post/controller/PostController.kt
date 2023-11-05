@@ -5,11 +5,15 @@ import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.service.PostService
+
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+
 import java.net.URI
+
 import java.util.*
+
 import javax.validation.Valid
 
 @RestController

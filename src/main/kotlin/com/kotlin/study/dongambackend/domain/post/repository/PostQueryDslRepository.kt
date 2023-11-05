@@ -3,9 +3,10 @@ package com.kotlin.study.dongambackend.domain.post.repository
 import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.dto.response.QPostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.entity.QPost
-import com.querydsl.jpa.impl.JPAQueryFactory
-import org.springframework.stereotype.Repository
 
+import com.querydsl.jpa.impl.JPAQueryFactory
+
+import org.springframework.stereotype.Repository
 import org.springframework.data.domain.Pageable
 
 @Repository

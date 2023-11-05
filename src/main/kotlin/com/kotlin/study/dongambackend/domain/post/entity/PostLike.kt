@@ -2,6 +2,7 @@ package com.kotlin.study.dongambackend.domain.post.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
+
 import javax.persistence.Column
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
