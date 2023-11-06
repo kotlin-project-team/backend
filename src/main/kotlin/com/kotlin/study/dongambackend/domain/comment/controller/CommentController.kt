@@ -36,7 +36,7 @@ class CommentController(private val commentService: CommentService) {
     fun reportComment(
         @PathVariable commentId: Long,
         @RequestBody commentReportRequest: CommentReportRequest
-    ): ResponseEntity<CommentReportResponse> {
+    ): ResponseEntity<Unit> {
         val reportId = commentService.reportComment(commentId, commentReportRequest)
         return ResponseEntity.created(URI.create("/api/comment/$reportId")).build()
     }
@@ -52,7 +52,6 @@ class CommentController(private val commentService: CommentService) {
         } catch (e: BaseException) {
             BaseResponse<ResponseStatusType?>(e.status, false).convert()
         }
-        return ResponseEntity.ok().build()
     }
 
     @DeleteMapping("/{commentId}")
