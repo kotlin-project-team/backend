@@ -1,8 +1,8 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.config.BaseException
-import com.kotlin.study.dongambackend.common.config.BaseResponse
-import com.kotlin.study.dongambackend.common.config.ResponseStatus
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
@@ -38,23 +38,23 @@ class CommentController(private val commentService: CommentService) {
     fun updateComment(
         @RequestBody commentUpdateRequest: CommentUpdateRequest,
         @PathVariable commentId: Long
-    ): ResponseEntity<BaseResponse<ResponseStatus?>> {
+    ): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             val result = commentService.updateComment(commentUpdateRequest, commentId)
-            BaseResponse<ResponseStatus?>(ResponseStatus.SUCCESS).convert()
+            BaseResponse<ResponseStatusType?>(ResponseStatusType.SUCCESS).convert()
         } catch (e: BaseException) {
-            BaseResponse<ResponseStatus?>(e.status, false).convert()
+            BaseResponse<ResponseStatusType?>(e.status, false).convert()
         }
         return ResponseEntity.ok().build()
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<BaseResponse<ResponseStatus?>> {
+    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             commentService.deleteComment(commentId)
-            BaseResponse<ResponseStatus?>(ResponseStatus.SUCCESS).convert()
+            BaseResponse<ResponseStatusType?>(ResponseStatusType.SUCCESS).convert()
         } catch (e: BaseException) {
-            BaseResponse<ResponseStatus?>(e.status, false).convert()
+            BaseResponse<ResponseStatusType?>(e.status, false).convert()
         }
 
     }

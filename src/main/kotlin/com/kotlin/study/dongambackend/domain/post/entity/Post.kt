@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import lombok.AllArgsConstructor
 import lombok.Builder
@@ -22,11 +23,13 @@ class Post(
     val userId: Long,
 
     @NotNull
-    var title: String,
+    var title: String?,
 
-    var content: String,
+    var content: String?,
 
-    val category: String,
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    val category: BoardCategoryType,
 
     @ColumnDefault("0")
     val likes: Int? = 0,
