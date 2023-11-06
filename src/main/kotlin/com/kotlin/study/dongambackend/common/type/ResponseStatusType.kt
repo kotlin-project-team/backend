@@ -1,6 +1,6 @@
-package com.kotlin.study.dongambackend.common.config
+package com.kotlin.study.dongambackend.common.type
 
-enum class ResponseStatus(val code: Int, val statusMsg: String) {
+enum class ResponseStatusType(val code: Int, val statusMessage: String) {
     SUCCESS(200, "OK"),
     CREATED(201, "Created"),
     BAD_REQUEST(400, "Bad Request"),

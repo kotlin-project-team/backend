@@ -41,9 +41,9 @@ class CommentService(
     }
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
-        val comment = commentRepository.findById(commentId).orElseGet { throw BaseException(ResponseStatus.BAD_REQUEST) }
+        val comment = commentRepository.findById(commentId).orElseGet { throw BaseException(ResponseStatusType.BAD_REQUEST) }
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        comment.postId ?: throw BaseException(ResponseStatus.NOT_FOUND)
+        comment.postId ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         comment.updateComment(commentUpdateRequest)
         commentRepository.save(comment)
 
@@ -53,7 +53,7 @@ class CommentService(
     fun deleteComment(commentId: Long) {
         val comment = commentRepository.findById(commentId).orElseThrow { BaseException(ResponseStatus.NOT_FOUND) }
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatus.NOT_FOUND)
+        val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         commentRepository.deleteById(commentIdToDelete)
     }
 

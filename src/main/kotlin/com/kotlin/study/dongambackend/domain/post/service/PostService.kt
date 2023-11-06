@@ -1,8 +1,10 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
+import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
@@ -11,6 +13,7 @@ import com.kotlin.study.dongambackend.domain.post.repository.PostQueryDslReposit
 import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +26,14 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable): List<Post> {
-        return postQueryDslRepository.findAllPost(pageable)
+    fun getAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
+        return postQueryDslRepository.findAllPost(pageable, category)
     }
 
-    @Transactional(readOnly=true)
-    fun getPostById(postId: Long): Post {
-        return postRepository.findById(postId).orElseThrow()
+    @Transactional(readOnly = true)
+    fun getPostById(postId: Long): Post? {
+        return postRepository.findByIdOrNull(postId)
+            ?: throw NoSuchElementException()
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
@@ -38,7 +42,8 @@ class PostService(
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        val post = postRepository.findById(postId).orElseThrow()
+        val post = postRepository.findByIdOrNull(postId)
+            ?: throw NoSuchElementException()
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
@@ -51,9 +56,8 @@ class PostService(
 
     fun clickPostLike(postId: Long, userId: Long) {
         if (isExistedPost(postId)) {
-            val postLike = postLikeRepository.findById(userId, postId).orElse(
-                PostLike(PostLikeKey(userId, postId))
-            )
+            val postLike = postLikeRepository.findById(userId, postId)
+                ?: PostLike(PostLikeKey(userId, postId))
             postLike.updatePostLike()
             postLikeRepository.save(postLike)
         }
