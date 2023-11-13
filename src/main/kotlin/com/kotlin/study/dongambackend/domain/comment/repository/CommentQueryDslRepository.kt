@@ -15,7 +15,6 @@ class CommentQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
     fun searchCommentsBySlice(lastCommentId: Long, pageable: Pageable): Slice<Comment> {
         val results: List<Comment> = queryDslFactory.selectFrom(qComment)
             .where(
-                ltCommentId(lastCommentId),
                 qComment.isDeleted.eq(false)
             )
             .orderBy(qComment.id.desc())

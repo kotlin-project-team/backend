@@ -1,7 +1,8 @@
 package com.kotlin.study.dongambackend.domain.comment.service
 
-import com.kotlin.study.dongambackend.common.config.BaseException
-import com.kotlin.study.dongambackend.common.config.ResponseStatus
+
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentSliceRequest
@@ -35,7 +36,7 @@ class CommentService(
         commentRepository.save(comment)
 
         // TODO: Unauthorized 처리
-        val commentId = comment.postId?.let { commentRepository.findById(it).orElseThrow { BaseException(ResponseStatus.NOT_FOUND) } }
+        val commentId = comment.postId?.let { commentRepository.findById(it).orElseThrow { BaseException(ResponseStatusType.NOT_FOUND) } }
 
         return comment.id
     }
@@ -51,7 +52,7 @@ class CommentService(
     }
 
     fun deleteComment(commentId: Long) {
-        val comment = commentRepository.findById(commentId).orElseThrow { BaseException(ResponseStatus.NOT_FOUND) }
+        val comment = commentRepository.findById(commentId).orElseThrow { BaseException(ResponseStatusType.NOT_FOUND) }
         // TODO: Unauthorized 및 ForbiddenToken 처리
         val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         commentRepository.deleteById(commentIdToDelete)
