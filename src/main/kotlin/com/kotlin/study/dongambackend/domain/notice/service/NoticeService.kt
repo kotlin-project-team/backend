@@ -1,8 +1,8 @@
 package com.kotlin.study.dongambackend.domain.notice.service
 
-import com.kotlin.config.BaseException
+import com.kotlin.study.dongambackend.common.config.BaseException
+import com.kotlin.study.dongambackend.common.config.ResponseStatus
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
-import com.kotlin.config.ResponseStatus
 import com.kotlin.study.dongambackend.domain.notice.entity.Notice
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeRepository
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest

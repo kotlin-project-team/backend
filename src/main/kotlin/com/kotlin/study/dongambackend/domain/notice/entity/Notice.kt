@@ -11,13 +11,12 @@ import javax.persistence.*
 @Getter
 @NoArgsConstructor
 @DynamicInsert
-@Table(name = "comment")
+@Table(name = "notice")
 @Entity
 class Notice : BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
     var id: Long? = null
 
     var content: String? = null
