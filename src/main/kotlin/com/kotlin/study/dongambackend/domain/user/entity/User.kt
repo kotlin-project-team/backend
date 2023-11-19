@@ -4,6 +4,7 @@ import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -23,6 +24,7 @@ import javax.validation.constraints.NotNull
 )
 @Entity
 @SQLDelete(sql = "UPDATE member SET is_active = true WHERE student_id = ?")
+@Where(clause = "is_active = false")
 @DynamicInsert
 class User(
 
