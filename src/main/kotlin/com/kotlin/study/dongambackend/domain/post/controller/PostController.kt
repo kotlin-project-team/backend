@@ -29,9 +29,9 @@ class PostController(private val postService: PostService) {
         pageable: Pageable,
         @RequestParam(value = "category", required = true)
         @ValidateCategory(enumClass = BoardCategoryType::class) category: BoardCategoryType
-    ): ResponseEntity<BaseResponse<List<PostCategoryFreeResponse>>> {
+    ): ResponseEntity<List<PostCategoryFreeResponse>> {
         val posts = postService.getAllPost(pageable, category)
-        return BaseResponse(ResponseStatusType.SUCCESS, posts).convert()
+        return ResponseEntity.ok().body(posts)
     }
 
     @GetMapping("/{postId}")
