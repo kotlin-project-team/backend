@@ -37,14 +37,14 @@ class User(
     @NotBlank
     val nickname: String,
 
-    @Column(name = "is_active")
-    @ColumnDefault("false")
-    val isActive: Boolean,
-
     @Column(name = "device_token")
     val deviceToken: String,
 
+    @Column(name = "is_active")
+    @ColumnDefault("false")
+    val isActive: Boolean? = false,
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long,
+    val id: Long? = null
 ) : BaseTimeEntity()
