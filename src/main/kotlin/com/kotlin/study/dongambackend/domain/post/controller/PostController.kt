@@ -1,7 +1,9 @@
 package com.kotlin.study.dongambackend.domain.post.controller
 
 import com.kotlin.study.dongambackend.common.annotation.ValidateCategory
+import com.kotlin.study.dongambackend.common.dto.BaseResponse
 import com.kotlin.study.dongambackend.common.type.BoardCategoryType
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
