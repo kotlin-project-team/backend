@@ -16,6 +16,7 @@ import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepositor
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -42,7 +43,9 @@ class CommentService(
     }
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
-        val comment = commentRepository.findById(commentId).orElseGet { throw BaseException(ResponseStatusType.BAD_REQUEST) }
+        val comment = commentRepository.findByIdOrNull(commentId)
+            ?: throw BaseException(ResponseStatusType.BAD_REQUEST)
+        
         // TODO: Unauthorized 및 ForbiddenToken 처리
         comment.postId ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         comment.updateComment(commentUpdateRequest)
@@ -52,7 +55,9 @@ class CommentService(
     }
 
     fun deleteComment(commentId: Long) {
-        val comment = commentRepository.findById(commentId).orElseThrow { BaseException(ResponseStatusType.NOT_FOUND) }
+        val comment = commentRepository.findByIdOrNull(commentId)
+            ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+
         // TODO: Unauthorized 및 ForbiddenToken 처리
         val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         commentRepository.deleteById(commentIdToDelete)

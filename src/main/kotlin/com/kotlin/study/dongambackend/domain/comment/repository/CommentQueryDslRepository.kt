@@ -26,7 +26,7 @@ class CommentQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
     }
 
     // no-offset 방식 처리하는 메서드
-    private fun ltCommentId(commentId: Long): BooleanExpression? {
+    private fun ltCommentId(commentId: Long?): BooleanExpression? {
         return if (commentId == null) {
             null
         } else qComment.id.lt(commentId)

@@ -5,13 +5,9 @@ import com.kotlin.study.dongambackend.common.dto.BaseResponse
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
-import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentSliceRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
-import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentReportResponse
-import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.entity.Comment
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
