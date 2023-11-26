@@ -37,6 +37,7 @@ class User(
     @NotBlank
     val nickname: String,
 
+    // 추후 NoSQL로 마이그레이션
     @Column(name = "device_token")
     val deviceToken: String,
 
