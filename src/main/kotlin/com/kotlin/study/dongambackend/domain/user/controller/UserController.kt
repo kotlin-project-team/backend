@@ -28,7 +28,9 @@ class UserController(private val userService: UserService) {
     }
 
     @PostMapping("/my-page/password")
-    fun checkPasswordForMyPage(@RequestBody checkPasswordForMyPageRequest: CheckPasswordForMyPageRequest): ResponseEntity<Unit> {
+    fun checkPasswordForMyPage(
+        @RequestBody checkPasswordForMyPageRequest: CheckPasswordForMyPageRequest
+    ): ResponseEntity<Unit> {
         val userId = 1L
         userService.checkPasswordForMyPage(checkPasswordForMyPageRequest.password, userId);
         return ResponseEntity.ok().build()

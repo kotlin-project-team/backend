@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable
 
 @Repository
 class PostQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
+
     val qPost = QPost.post;
 
     /**

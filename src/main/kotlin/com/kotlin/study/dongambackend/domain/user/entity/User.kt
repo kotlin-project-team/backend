@@ -27,7 +27,6 @@ import javax.validation.constraints.NotNull
 @Where(clause = "is_active = false")
 @DynamicInsert
 class User(
-
     @Column(name = "student_id", nullable = false)
     val studentId: String,
 

@@ -20,7 +20,6 @@ import javax.persistence.*
 @Where(clause = "is_deleted = false")
 @Entity
 class Post(
-
     // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
     val userId: Long,
