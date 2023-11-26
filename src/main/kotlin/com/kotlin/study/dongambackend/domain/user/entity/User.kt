@@ -23,29 +23,37 @@ import javax.validation.constraints.NotNull
     )]
 )
 @Entity
-@SQLDelete(sql = "UPDATE member SET is_active = true WHERE student_id = ?")
-@Where(clause = "is_active = false")
+@SQLDelete(sql = "UPDATE member SET is_active = true WHERE id = ?")
+@Where(clause = "is_active = true")
 @DynamicInsert
 class User(
-
     @Column(name = "student_id", nullable = false)
     val studentId: String,
 
     @NotBlank
-    val password: String,
+    var password: String,
 
     @NotBlank
-    val nickname: String,
+    var nickname: String,
 
     // 추후 NoSQL로 마이그레이션
     @Column(name = "device_token")
     val deviceToken: String,
 
     @Column(name = "is_active")
-    @ColumnDefault("false")
-    val isActive: Boolean? = false,
+    @ColumnDefault("true")
+    val isActive: Boolean? = true,
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long? = null
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+
+    fun updatePassword(password: String) {
+        this.password = password
+    }
+
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
+    }
+}

@@ -9,6 +9,7 @@ import javax.persistence.Embeddable
 @Embeddable
 @Getter
 class PostLikeKey : Serializable {
+
     var userId: Long
     var postId: Long
 

@@ -4,7 +4,6 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
 data class UserCreateRequest(
-
     @field:NotBlank(message = "학번 값은 필수입니다.")
     val studentId: String,
 

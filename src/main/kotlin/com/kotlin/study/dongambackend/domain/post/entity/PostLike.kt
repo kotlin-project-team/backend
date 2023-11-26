@@ -12,7 +12,6 @@ import javax.persistence.Entity
 @Entity
 @Where(clause = "is_deleted = false")
 class PostLike(
-
     @EmbeddedId
     val id: PostLikeKey,
 

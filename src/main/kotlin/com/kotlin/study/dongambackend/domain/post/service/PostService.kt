@@ -63,7 +63,7 @@ class PostService(
         }
     }
 
-    fun isExistedPost(postId: Long): Boolean {
+    private fun isExistedPost(postId: Long): Boolean {
         return postRepository.findById(postId).isPresent
     }
 }
