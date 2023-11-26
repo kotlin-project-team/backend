@@ -50,4 +50,11 @@ class UserController(private val userService: UserService) {
         userService.updateNickname(updateNicknameRequest, userId)
         return ResponseEntity.ok().build()
     }
+
+    @DeleteMapping
+    fun deleteUser(): ResponseEntity<Unit> {
+        val userId = 1L
+        userService.deleteUser(userId)
+        return ResponseEntity.ok().build()
+    }
 }

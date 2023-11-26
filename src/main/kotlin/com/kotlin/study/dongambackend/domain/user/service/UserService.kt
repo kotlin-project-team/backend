@@ -52,4 +52,8 @@ class UserService(private val userMapper: UserMapper, private val userRepository
         user.updateNickname(updateNicknameRequest.nickname)
         userRepository.save(user)
     }
+
+    fun deleteUser(userId: Long) {
+        userRepository.deleteById(userId)
+    }
 }
