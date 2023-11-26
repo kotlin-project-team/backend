@@ -1,18 +1,22 @@
 package com.kotlin.study.dongambackend.domain.notice.service
 
-import com.kotlin.study.dongambackend.common.config.BaseException
-import com.kotlin.study.dongambackend.common.config.ResponseStatus
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.entity.Notice
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeRepository
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
+import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
 import lombok.extern.slf4j.Slf4j
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.io.IOException
 
 @Service
 @Slf4j
-class NoticeService(private val noticeRepository: NoticeRepository) {
+class NoticeService(private val noticeRepository: NoticeRepository, private val noticeQueryDslRepository: NoticeQueryDslRepository,) {
 
     fun createNotice(noticeCreateRequest: NoticeCreateRequest): Long? {
         val notice = Notice(noticeCreateRequest.content)
@@ -36,7 +40,12 @@ class NoticeService(private val noticeRepository: NoticeRepository) {
             noticeRepository.deleteById(notice.id!!)
         } catch (e: IOException) {
             // TODO: IOException이 아닌 로그인 여부에 따른 처리로 변경.
-            throw BaseException(ResponseStatus.UNAUTHORIZED);
+            throw BaseException(ResponseStatusType.UNAUTHORIZED);
         }
+    }
+
+    @Transactional(readOnly = true)
+    fun getAllNotice(pageable: Pageable): List<NoticeCategoryFreeResponse> {
+        return noticeQueryDslRepository.findAllPost(pageable)
     }
 }

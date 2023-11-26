@@ -1,11 +1,14 @@
 package com.kotlin.study.dongambackend.domain.notice.controller
 
-import com.kotlin.study.dongambackend.common.config.BaseException
-import com.kotlin.study.dongambackend.common.config.BaseResponse
-import com.kotlin.study.dongambackend.common.config.ResponseStatus
+
+import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.service.NoticeService
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
+import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -30,7 +33,7 @@ class NoticeController(private val noticeService: NoticeService) {
     ): ResponseEntity<BaseResponse<ResponseStatus?>> {
         return try {
             val result = noticeService.updateNotice(noticeUpdateRequest, noticeId)
-            BaseResponse<ResponseStatus?>(ResponseStatus.SUCCESS).convert()
+            BaseResponse<ResponseStatus?>(ResponseStatusType.SUCCESS).convert()
         } catch (e: BaseException) {
             BaseResponse<ResponseStatus?>(e.status, false).convert()
         }
@@ -41,10 +44,19 @@ class NoticeController(private val noticeService: NoticeService) {
     fun deletenotice(@PathVariable noticeId: Long): ResponseEntity<BaseResponse<ResponseStatus?>> {
         return try {
             noticeService.deleteNotice(noticeId)
-            BaseResponse<ResponseStatus?>(ResponseStatus.SUCCESS).convert()
+            BaseResponse<ResponseStatus?>(ResponseStatusType.SUCCESS).convert()
         } catch (e: BaseException) {
             BaseResponse<ResponseStatus?>(e.status, false).convert()
         }
-
     }
+
+    @GetMapping
+    fun getAllNotice(
+        pageable: Pageable
+    ): ResponseEntity<List<NoticeCategoryFreeResponse>> {
+        val notices = noticeService.getAllNotice(pageable)
+        return ResponseEntity.ok().body(notices)
+    }
+
+
 }
