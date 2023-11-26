@@ -41,8 +41,8 @@ class User(
     val deviceToken: String,
 
     @Column(name = "is_active")
-    @ColumnDefault("false")
-    val isActive: Boolean? = false,
+    @ColumnDefault("true")
+    val isActive: Boolean? = true,
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
