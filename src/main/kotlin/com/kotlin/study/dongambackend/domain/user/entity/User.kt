@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull
 )
 @Entity
 @SQLDelete(sql = "UPDATE member SET is_active = true WHERE id = ?")
-@Where(clause = "is_active = false")
+@Where(clause = "is_active = true")
 @DynamicInsert
 class User(
     @Column(name = "student_id", nullable = false)
