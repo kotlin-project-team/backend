@@ -2,6 +2,7 @@ package com.kotlin.study.dongambackend.domain.user.service
 
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
+import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
 import com.kotlin.study.dongambackend.domain.user.mapper.UserMapper
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -21,5 +22,14 @@ class UserService(private val userMapper: UserMapper, private val userRepository
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
         return MyInformationResponse(user.studentId, user.nickname)
+    }
+
+    // TODO: 추후 암호화
+    @Transactional(readOnly = true)
+    fun checkPasswordForMyPage(password: String, userId: Long) {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
+
+        if (password != user.password) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
     }
 }
