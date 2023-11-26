@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.user.service
 
+import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
 import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
@@ -31,5 +32,15 @@ class UserService(private val userMapper: UserMapper, private val userRepository
             ?: throw NoSuchElementException()
 
         if (password != user.password) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+    }
+
+    fun updatePassword(updatePasswordRequest: UpdatePasswordRequest, userId: Long) {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
+
+        if (user.password != updatePasswordRequest.oldPassword) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+
+        user.updatePassword(updatePasswordRequest.newPassword)
+        userRepository.save(user)
     }
 }

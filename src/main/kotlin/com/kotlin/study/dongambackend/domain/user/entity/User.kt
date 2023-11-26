@@ -32,7 +32,7 @@ class User(
     val studentId: String,
 
     @NotBlank
-    val password: String,
+    var password: String,
 
     @NotBlank
     val nickname: String,
@@ -48,4 +48,9 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long? = null
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+
+    fun updatePassword(password: String) {
+        this.password = password
+    }
+}
