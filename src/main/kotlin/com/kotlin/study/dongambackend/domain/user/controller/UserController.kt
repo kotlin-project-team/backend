@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.user.controller
 
 import com.kotlin.study.dongambackend.domain.user.dto.request.CheckPasswordForMyPageRequest
+import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
@@ -40,6 +41,13 @@ class UserController(private val userService: UserService) {
     fun updatePassword(@RequestBody @Valid updatePasswordRequest: UpdatePasswordRequest): ResponseEntity<Unit> {
         val userId = 1L
         userService.updatePassword(updatePasswordRequest, userId)
+        return ResponseEntity.ok().build()
+    }
+
+    @PatchMapping("/nickname")
+    fun updateNickname(@RequestBody updateNicknameRequest: UpdateNicknameRequest): ResponseEntity<Unit> {
+        val userId = 1L
+        userService.updateNickname(updateNicknameRequest, userId)
         return ResponseEntity.ok().build()
     }
 }

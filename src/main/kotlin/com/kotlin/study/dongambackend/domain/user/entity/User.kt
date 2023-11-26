@@ -34,7 +34,7 @@ class User(
     var password: String,
 
     @NotBlank
-    val nickname: String,
+    var nickname: String,
 
     // 추후 NoSQL로 마이그레이션
     @Column(name = "device_token")
@@ -51,5 +51,9 @@ class User(
 
     fun updatePassword(password: String) {
         this.password = password
+    }
+
+    fun updateNickname(nickname: String) {
+        this.nickname = nickname
     }
 }

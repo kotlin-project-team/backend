@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.user.service
 
+import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
@@ -41,6 +42,14 @@ class UserService(private val userMapper: UserMapper, private val userRepository
         if (user.password != updatePasswordRequest.oldPassword) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
 
         user.updatePassword(updatePasswordRequest.newPassword)
+        userRepository.save(user)
+    }
+
+    fun updateNickname(updateNicknameRequest: UpdateNicknameRequest, userId: Long) {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
+
+        user.updateNickname(updateNicknameRequest.nickname)
         userRepository.save(user)
     }
 }
