@@ -1,12 +1,10 @@
 package com.kotlin.study.dongambackend.domain.user.controller
 
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
+import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
 import com.kotlin.study.dongambackend.domain.user.service.UserService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 import javax.validation.Valid
 
@@ -18,5 +16,12 @@ class UserController(private val userService: UserService) {
     fun createUser(@Valid @RequestBody userCreateRequest: UserCreateRequest): ResponseEntity<Unit> {
         val userId = userService.createUser(userCreateRequest)
         return ResponseEntity.created(URI.create("/api/user/$userId")).build()
+    }
+
+    @GetMapping
+    fun getMyInformation(): ResponseEntity<MyInformationResponse> {
+        val userId = 1L   // TODO: 추후 Token으로 수정
+        val result = userService.getMyInformation(userId)
+        return ResponseEntity.ok().body(result)
     }
 }
