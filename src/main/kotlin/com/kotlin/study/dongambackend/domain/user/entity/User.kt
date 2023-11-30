@@ -17,33 +17,28 @@ import javax.validation.constraints.NotNull
 
 @Table(
     name = "member",
-    uniqueConstraints = [
-        UniqueConstraint(
+    uniqueConstraints = [UniqueConstraint(
         name = "user_unique_constraint",
         columnNames = ["student_id", "nickname", "device_token"]
-        ),
-        UniqueConstraint(
-            name = "student_unique_constraint",
-            columnNames = ["student_id"]
-        )
-    ]
+    )]
 )
 @Entity
 @SQLDelete(sql = "UPDATE member SET is_active = true WHERE id = ?")
 @Where(clause = "is_active = true")
 @DynamicInsert
 class User(
-    @Column(name = "student_id", nullable = false)
+    @Column(name = "student_id", nullable = false, unique = true)
     val studentId: String,
 
     @NotBlank
     var password: String,
 
     @NotBlank
+    @Column(unique = true)
     var nickname: String,
 
     // 추후 NoSQL로 마이그레이션
-    @Column(name = "device_token")
+    @Column(name = "device_token", unique = true)
     val deviceToken: String,
 
     @Column(name = "is_active")
