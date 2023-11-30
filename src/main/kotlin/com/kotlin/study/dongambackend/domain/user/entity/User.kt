@@ -17,10 +17,16 @@ import javax.validation.constraints.NotNull
 
 @Table(
     name = "member",
-    uniqueConstraints = [UniqueConstraint(
+    uniqueConstraints = [
+        UniqueConstraint(
         name = "user_unique_constraint",
         columnNames = ["student_id", "nickname", "device_token"]
-    )]
+        ),
+        UniqueConstraint(
+            name = "student_unique_constraint",
+            columnNames = ["student_id"]
+        )
+    ]
 )
 @Entity
 @SQLDelete(sql = "UPDATE member SET is_active = true WHERE id = ?")
