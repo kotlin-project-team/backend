@@ -6,7 +6,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        ddl-auto: update
+        ddl-auto: validate
         show_sql: true
         format_sql: true   # sql 출력문의 모양을 잡아준다.
         use_sql_comments: true   # 콘솔에 표시되는 쿼리문 위에 어떤 실행을 하려는지 힌트 표시, 주석 표시

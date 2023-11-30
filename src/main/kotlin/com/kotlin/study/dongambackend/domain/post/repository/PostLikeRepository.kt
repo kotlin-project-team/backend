@@ -1,9 +1,9 @@
 package com.kotlin.study.dongambackend.domain.post.repository
 
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
+
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import java.util.*
 
 interface PostLikeRepository : JpaRepository<PostLike, Long> {
 

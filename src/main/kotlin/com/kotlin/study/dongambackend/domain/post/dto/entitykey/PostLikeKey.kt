@@ -1,12 +1,15 @@
 package com.kotlin.study.dongambackend.domain.post.dto.entitykey
 
 import lombok.Getter
+
 import java.io.Serializable
+
 import javax.persistence.Embeddable
 
 @Embeddable
 @Getter
 class PostLikeKey : Serializable {
+
     var userId: Long
     var postId: Long
 

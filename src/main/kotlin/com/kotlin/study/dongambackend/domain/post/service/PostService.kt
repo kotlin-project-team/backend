@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 class PostService(
-    val postRepository: PostRepository,
-    val postQueryDslRepository: PostQueryDslRepository,
-    val postLikeRepository: PostLikeRepository,
-    val postMapper: PostMapper
+    private val postRepository: PostRepository,
+    private val postQueryDslRepository: PostQueryDslRepository,
+    private val postLikeRepository: PostLikeRepository,
+    private val postMapper: PostMapper
 ) {
 
     @Transactional(readOnly = true)
@@ -63,7 +63,7 @@ class PostService(
         }
     }
 
-    fun isExistedPost(postId: Long): Boolean {
+    private fun isExistedPost(postId: Long): Boolean {
         return postRepository.findById(postId).isPresent
     }
 }
