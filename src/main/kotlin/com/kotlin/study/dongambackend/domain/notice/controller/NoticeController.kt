@@ -19,7 +19,7 @@ import java.util.*
 class NoticeController(private val noticeService: NoticeService) {
 
     @PostMapping
-    fun createnotice(
+    fun createNotice(
         @RequestBody noticeCreateRequest: NoticeCreateRequest
     ): ResponseEntity<Unit> {
         val noticeId = noticeService.createNotice(noticeCreateRequest)
@@ -27,9 +27,10 @@ class NoticeController(private val noticeService: NoticeService) {
     }
 
     @PatchMapping("/{noticeId}")
-    fun updatenotice(
+    fun updateNotice(
         @RequestBody noticeUpdateRequest: NoticeUpdateRequest,
         @PathVariable noticeId: Long
+    // TODO globalException 고려
     ): ResponseEntity<BaseResponse<ResponseStatus?>> {
         return try {
             val result = noticeService.updateNotice(noticeUpdateRequest, noticeId)
@@ -37,11 +38,10 @@ class NoticeController(private val noticeService: NoticeService) {
         } catch (e: BaseException) {
             BaseResponse<ResponseStatus?>(e.status, false).convert()
         }
-        return ResponseEntity.ok().build()
     }
 
     @DeleteMapping("/{noticeId}")
-    fun deletenotice(@PathVariable noticeId: Long): ResponseEntity<BaseResponse<ResponseStatus?>> {
+    fun deleteNotice(@PathVariable noticeId: Long): ResponseEntity<BaseResponse<ResponseStatus?>> {
         return try {
             noticeService.deleteNotice(noticeId)
             BaseResponse<ResponseStatus?>(ResponseStatusType.SUCCESS).convert()

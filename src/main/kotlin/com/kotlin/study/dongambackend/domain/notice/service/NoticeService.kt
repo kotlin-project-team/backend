@@ -10,19 +10,17 @@ import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryF
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.io.IOException
 
 @Service
 @Slf4j
-class NoticeService(private val noticeRepository: NoticeRepository, private val noticeQueryDslRepository: NoticeQueryDslRepository,) {
+class NoticeService(private val noticeRepository: NoticeRepository, private val noticeQueryDslRepository: NoticeQueryDslRepository) {
 
     fun createNotice(noticeCreateRequest: NoticeCreateRequest): Long? {
         val notice = Notice(noticeCreateRequest.content)
-        noticeRepository.save(notice)
-
-        return notice.id
+        return noticeRepository.save(notice).id
     }
 
     fun updateNotice(noticeUpdateRequest: NoticeUpdateRequest, noticeId: Long): Notice {
@@ -34,14 +32,12 @@ class NoticeService(private val noticeRepository: NoticeRepository, private val 
     }
 
     fun deleteNotice(noticeId: Long) {
-        try {
-            val notice = noticeRepository.findById(noticeId).get()
-            // TODO: !!가 없는 경우 처리
-            noticeRepository.deleteById(notice.id!!)
-        } catch (e: IOException) {
-            // TODO: IOException이 아닌 로그인 여부에 따른 처리로 변경.
-            throw BaseException(ResponseStatusType.UNAUTHORIZED);
-        }
+        val notice = noticeRepository.findByIdOrNull(noticeId)
+            ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+
+        // TODO: Unauthorized 및 ForbiddenToken 처리
+        val commentIdToDelete = notice.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+        noticeRepository.deleteById(commentIdToDelete)
     }
 
     @Transactional(readOnly = true)
