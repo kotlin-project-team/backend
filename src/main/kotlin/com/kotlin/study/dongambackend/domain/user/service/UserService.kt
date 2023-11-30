@@ -8,14 +8,19 @@ import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchE
 import com.kotlin.study.dongambackend.domain.user.mapper.UserMapper
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserService(private val userMapper: UserMapper, private val userRepository: UserRepository) {
+class UserService(
+    private val userMapper: UserMapper,
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
+) {
 
     fun createUser(userCreateRequest: UserCreateRequest): Long? {
-        val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest)
+        val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest, passwordEncoder)
         return userRepository.save(user).id
     }
 
