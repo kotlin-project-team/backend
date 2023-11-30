@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
+import org.springframework.security.crypto.password.PasswordEncoder
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -50,8 +51,8 @@ class User(
     val id: Long? = null
 ) : BaseTimeEntity() {
 
-    fun updatePassword(password: String) {
-        this.password = password
+    fun updatePassword(password: String, passwordEncoder: PasswordEncoder) {
+        this.password = passwordEncoder.encode(password)
     }
 
     fun updateNickname(nickname: String) {

@@ -46,7 +46,7 @@ class UserService(
 
         if (user.password != updatePasswordRequest.oldPassword) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
 
-        user.updatePassword(updatePasswordRequest.newPassword)
+        user.updatePassword(updatePasswordRequest.newPassword, passwordEncoder)
         userRepository.save(user)
     }
 
