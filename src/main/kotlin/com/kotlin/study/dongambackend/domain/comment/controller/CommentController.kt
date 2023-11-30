@@ -62,8 +62,8 @@ class CommentController(private val commentService: CommentService) {
 
     // TODO: 댓글 목록 조회 리스트 api
     @GetMapping
-    fun getAllComment(@RequestParam commentId:Long, pageable: Pageable): ResponseEntity<Slice<Comment>> {
-        val comments = commentService.getAllComment(commentId, pageable)
+    fun getAllComment(@RequestParam lastCommentId: Long, pageable: Pageable): ResponseEntity<Slice<Comment>> {
+        val comments = commentService.getAllComment(lastCommentId, pageable)
         return ResponseEntity.ok().body(comments)
     }
 
