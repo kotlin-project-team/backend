@@ -58,7 +58,7 @@ tasks.withType<Test> {
 
 tasks.withType<Copy> {
     copy {
-        from("../backend-config")
+        from("./backend-config")
         include("*.yml")
         into("src/main/resources")
     }
