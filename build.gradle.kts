@@ -56,9 +56,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks {
-    val copyBackendConfig by registering(Copy::class) {
-        from("./backend-config")
+tasks.withType<Copy> {
+    copy {
+        from("../backend-config")
         include("*.yml")
         into("src/main/resources")
     }
