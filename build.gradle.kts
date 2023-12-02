@@ -55,3 +55,11 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks {
+    val copyBackendConfig by registering(Copy::class) {
+        from("./backend-config")
+        include("*.yml")
+        into("src/main/resources")
+    }
+}
