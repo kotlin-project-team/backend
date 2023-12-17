@@ -17,7 +17,7 @@ class WebSecurityConfig {
             .httpBasic().disable()
             .formLogin().disable()
             .authorizeHttpRequests {
-                it.requestMatchers(AntPathRequestMatcher("/api/**")).permitAll()
+                it.antMatchers("/api/user", "/api/user/sign-in").permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement {
