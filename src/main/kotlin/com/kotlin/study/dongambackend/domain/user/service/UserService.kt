@@ -31,20 +31,22 @@ class UserService(
         return MyInformationResponse(user.studentId, user.nickname)
     }
 
-    // TODO: 추후 암호화
     @Transactional(readOnly = true)
     fun checkPasswordForMyPage(password: String, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
 
-        if (password != user.password) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+        // 원본 문자열을 먼저 넣어줘야 비교가 가능하다.
+        if (!passwordEncoder.matches(password, user.password))
+            throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
     }
 
     fun updatePassword(updatePasswordRequest: UpdatePasswordRequest, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
 
-        if (user.password != updatePasswordRequest.oldPassword) throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+        if (!passwordEncoder.matches(updatePasswordRequest.oldPassword, user.password))
+            throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
 
         user.updatePassword(updatePasswordRequest.newPassword, passwordEncoder)
         userRepository.save(user)
