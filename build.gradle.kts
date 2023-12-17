@@ -56,3 +56,11 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.withType<Copy> {
+    copy {
+        from("./backend-config")
+        include("*.yml")
+        into("src/main/resources")
+    }
+}
