@@ -3,6 +3,7 @@ package com.kotlin.study.dongambackend.domain.post.entity
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
+import com.kotlin.study.dongambackend.domain.user.entity.User
 
 import lombok.NoArgsConstructor
 
@@ -20,9 +21,9 @@ import javax.persistence.*
 @Where(clause = "is_deleted = false")
 @Entity
 class Post(
-    // TODO: userId 참조 필요
-    @Column(name = "user_id", nullable = false)
-    val userId: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    val userId: User,
 
     @NotNull
     var title: String?,
