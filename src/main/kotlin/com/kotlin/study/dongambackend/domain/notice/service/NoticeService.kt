@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.notice.service
 
 import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.entity.Notice
@@ -10,6 +11,7 @@ import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryF
 import com.kotlin.study.dongambackend.domain.notice.mapper.NoticeMapper
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
+import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
@@ -48,7 +50,7 @@ class NoticeService(
     }
 
     @Transactional(readOnly = true)
-    fun getAllNotice(pageable: Pageable): List<NoticeCategoryFreeResponse> {
-        return noticeQueryDslRepository.findAllPost(pageable)
+    fun getAllNotice(categoryType: BoardCategoryType, pageable: Pageable): List<NoticeCategoryFreeResponse> {
+        return noticeQueryDslRepository.findAllNotice(categoryType, pageable)
     }
 }
