@@ -7,7 +7,10 @@ import com.kotlin.study.dongambackend.domain.notice.entity.Notice
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeRepository
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.notice.mapper.NoticeMapper
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
+import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
+import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -16,10 +19,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Slf4j
-class NoticeService(private val noticeRepository: NoticeRepository, private val noticeQueryDslRepository: NoticeQueryDslRepository) {
+class NoticeService(
+    private val noticeRepository: NoticeRepository,
+    private val noticeQueryDslRepository: NoticeQueryDslRepository,
+    private val noticeMapper: NoticeMapper
+) {
 
-    fun createNotice(noticeCreateRequest: NoticeCreateRequest): Long? {
-        val notice = Notice(noticeCreateRequest.content)
+    fun createNotice(noticeCreateRequest: NoticeCreateRequest, userId: Long): Long? {
+        val notice = noticeMapper.convertCreateNoticeReqDtoToEntity(userId, noticeCreateRequest)
         return noticeRepository.save(notice).id
     }
 
