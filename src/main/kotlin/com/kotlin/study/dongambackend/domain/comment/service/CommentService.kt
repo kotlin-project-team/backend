@@ -5,7 +5,6 @@ import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
-import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentSliceRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.entity.Comment
@@ -17,6 +16,7 @@ import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -28,7 +28,7 @@ class CommentService(
     val commentQueryDslRepository: CommentQueryDslRepository
 ) {
     @Transactional(readOnly = true)
-    fun getAllComment(commentId: Long, pageable: Pageable): Slice<Comment> {
+    fun getAllComment(commentId: Long, pageable: Pageable): Slice<CommentResponse> {
         return commentQueryDslRepository.searchCommentsBySlice(commentId, pageable)
     }
 
