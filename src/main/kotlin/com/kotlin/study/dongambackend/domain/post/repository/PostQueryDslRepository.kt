@@ -3,6 +3,7 @@ package com.kotlin.study.dongambackend.domain.post.repository
 import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.post.dto.response.QPostCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.post.dto.response.QUserInformation
 import com.kotlin.study.dongambackend.domain.post.entity.QPost
 
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -18,13 +19,16 @@ class PostQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
     /**
      * isDeleted = true인 게시물 제외한 전체 게시물 리스트 페이지네이션
      */
-    // TODO: 자유게시판, 장터게시판 where절 분리
     fun findAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
         return queryDslFactory
             .select(
                 QPostCategoryFreeResponse(
                     qPost.id,
-                    qPost.userId,
+                    QUserInformation(
+                        qPost.userId.id,
+                        qPost.userId.studentId,
+                        qPost.userId.nickname
+                    ),
                     qPost.title,
                     qPost.content,
                     qPost.likes,

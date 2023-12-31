@@ -6,13 +6,7 @@ import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
 import org.springframework.security.crypto.password.PasswordEncoder
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.persistence.UniqueConstraint
+import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -37,6 +31,9 @@ class User(
     @NotBlank
     @Column(unique = true)
     var nickname: String,
+
+    @Enumerated(EnumType.STRING)
+    val role: Role,
 
     // 추후 NoSQL로 마이그레이션
     @Column(name = "device_token", unique = true)
