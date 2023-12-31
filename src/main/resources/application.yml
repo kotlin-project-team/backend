@@ -3,6 +3,7 @@ spring:
     include:
       - postgres
       - jwt
+      - redis
 
   jpa:
     properties:
