@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.user.mapper
 
 import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
+import com.kotlin.study.dongambackend.domain.user.entity.Role
 import com.kotlin.study.dongambackend.domain.user.entity.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,6 +15,7 @@ class UserMapper {
             createRequest.studentId,
             passwordEncoder.encode(createRequest.password),
             createRequest.nickname,
+            Role.USER,
             createRequest.deviceToken
         )
 }
