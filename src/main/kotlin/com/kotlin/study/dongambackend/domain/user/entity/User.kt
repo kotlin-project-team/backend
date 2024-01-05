@@ -5,13 +5,8 @@ import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.Where
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.persistence.UniqueConstraint
+import org.springframework.security.crypto.password.PasswordEncoder
+import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -27,17 +22,21 @@ import javax.validation.constraints.NotNull
 @Where(clause = "is_active = true")
 @DynamicInsert
 class User(
-    @Column(name = "student_id", nullable = false)
+    @Column(name = "student_id", nullable = false, unique = true)
     val studentId: String,
 
     @NotBlank
     var password: String,
 
     @NotBlank
+    @Column(unique = true)
     var nickname: String,
 
+    @Enumerated(EnumType.STRING)
+    val role: Role,
+
     // 추후 NoSQL로 마이그레이션
-    @Column(name = "device_token")
+    @Column(name = "device_token", unique = true)
     val deviceToken: String,
 
     @Column(name = "is_active")
@@ -49,8 +48,8 @@ class User(
     val id: Long? = null
 ) : BaseTimeEntity() {
 
-    fun updatePassword(password: String) {
-        this.password = password
+    fun updatePassword(password: String, passwordEncoder: PasswordEncoder) {
+        this.password = passwordEncoder.encode(password)
     }
 
     fun updateNickname(nickname: String) {

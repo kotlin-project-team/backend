@@ -37,6 +37,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.querydsl:querydsl-jpa:5.0.0")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 allOpen {
@@ -54,4 +59,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<Copy> {
+    copy {
+        from("./backend-config")
+        include("*.yml")
+        into("src/main/resources")
+    }
 }

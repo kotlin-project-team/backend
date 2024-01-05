@@ -1,10 +1,8 @@
 package com.kotlin.study.dongambackend.domain.user.controller
 
-import com.kotlin.study.dongambackend.domain.user.dto.request.CheckPasswordForMyPageRequest
-import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
-import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
-import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
+import com.kotlin.study.dongambackend.domain.user.dto.request.*
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
+import com.kotlin.study.dongambackend.domain.user.dto.response.SignInResponse
 import com.kotlin.study.dongambackend.domain.user.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -56,5 +54,11 @@ class UserController(private val userService: UserService) {
         val userId = 1L
         userService.deleteUser(userId)
         return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/sign-in")
+    fun signIn(@RequestBody signInRequest: SignInRequest): ResponseEntity<SignInResponse> {
+        val response = userService.signIn(signInRequest)
+        return ResponseEntity.ok().body(response)
     }
 }

@@ -11,6 +11,7 @@ import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import com.kotlin.study.dongambackend.domain.post.repository.PostLikeRepository
 import com.kotlin.study.dongambackend.domain.post.repository.PostQueryDslRepository
 import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
+import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -22,7 +23,8 @@ class PostService(
     private val postRepository: PostRepository,
     private val postQueryDslRepository: PostQueryDslRepository,
     private val postLikeRepository: PostLikeRepository,
-    private val postMapper: PostMapper
+    private val postMapper: PostMapper,
+    private val userRepository: UserRepository
 ) {
 
     @Transactional(readOnly = true)
@@ -37,7 +39,9 @@ class PostService(
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
-        val post = postMapper.convertCreatePostReqDtoToEntity(userId, postCreateRequest)
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
+        val post = postMapper.convertCreatePostReqDtoToEntity(user, postCreateRequest)
         return postRepository.save(post).id
     }
 
