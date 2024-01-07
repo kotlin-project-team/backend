@@ -76,12 +76,14 @@ class UserService(
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
 
         val accessToken = tokenProvider.createAccessToken(user.role.toString(), user.studentId)
+        val refreshToken = tokenProvider.createRefreshToken(user.role.toString(), user.studentId)
 
         return SignInResponse(
             user.id!!,
             user.studentId,
             user.nickname,
-            accessToken
+            accessToken,
+            refreshToken
         )
     }
 }
