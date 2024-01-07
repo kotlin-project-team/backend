@@ -30,18 +30,18 @@ class TokenProvider(
     private val ACCESS_TOKEN_HEADER = "bearer "
 
     fun createAccessToken(role: String, studentId: String): String {
-        return this.createToken(role, studentId)
+        return this.createToken(role, studentId, accessTokenTime)
     }
 
     fun createRefreshToken(role: String, studentId: String): String {
-        val refreshToken = this.createToken(role, studentId)
+        val refreshToken = this.createToken(role, studentId, refreshTokenTime)
         val valueOperations = redisTemplate.opsForValue()
         valueOperations.set(studentId, refreshToken, Duration.ofMillis(refreshTokenTime))
 
         return refreshToken
     }
 
-    private fun createToken(role: String, studentId: String): String {
+    private fun createToken(role: String, studentId: String, durationTime: Long): String {
         val claims = Jwts.claims().setSubject(studentId)
         claims.put("Role", role)
 
@@ -49,7 +49,7 @@ class TokenProvider(
             .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS256.jcaName))
             .setClaims(claims)
             .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
-            .setExpiration(Date.from(Instant.now().plus(accessTokenTime, ChronoUnit.HOURS)))
+            .setExpiration(Date.from(Instant.now().plus(durationTime, ChronoUnit.HOURS)))
             .compact()
     }
 }
