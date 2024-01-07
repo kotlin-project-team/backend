@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.notice.repository
 
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.notice.dto.response.QNoticeCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.notice.entity.QNotice
@@ -12,17 +13,18 @@ import org.springframework.data.domain.Pageable
 class NoticeQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
     val qNotice = QNotice.notice;
 
-    fun findAllPost(pageable: Pageable): List<NoticeCategoryFreeResponse> {
+    fun findAllNotice(categoryType: BoardCategoryType,pageable: Pageable): List<NoticeCategoryFreeResponse> {
         return queryDslFactory
             .select(
                 QNoticeCategoryFreeResponse(
                     qNotice.id,
+                    qNotice.title,
                     qNotice.content,
                 )
             ).from(qNotice)
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
-            .where(qNotice.isDeleted.eq(false))
+            .where(qNotice.isDeleted.eq(false) .and(qNotice.category.eq(categoryType)) )
             .fetch()
     }
 }

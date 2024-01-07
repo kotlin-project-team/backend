@@ -1,11 +1,13 @@
 package com.kotlin.study.dongambackend.domain.notice.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
 import lombok.Getter
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
 @Getter
@@ -13,24 +15,30 @@ import javax.persistence.*
 @DynamicInsert
 @Table(name = "notice")
 @Entity
-class Notice : BaseTimeEntity {
+class Notice(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long? = null
+    var id: Long?,
 
-    var content: String? = null
+    @NotNull
+    var title: String?,
+
+    var content: String?,
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    val category: BoardCategoryType,
 
     @Column(name = "is_deleted")
     @ColumnDefault("false")
     var isDeleted: Boolean = false
 
-    constructor(_content: String) {
-        content = _content
-    }
 
+) : BaseTimeEntity() {
     fun updateNotice(noticeUpdateRequest: NoticeUpdateRequest) {
         content = noticeUpdateRequest.content
+        title = noticeUpdateRequest.title
     }
 
     fun deleteNotice() {

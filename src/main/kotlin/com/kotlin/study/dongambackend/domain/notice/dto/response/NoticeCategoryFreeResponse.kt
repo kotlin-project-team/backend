@@ -4,5 +4,6 @@ import com.querydsl.core.annotations.QueryProjection
 
 data class NoticeCategoryFreeResponse @QueryProjection constructor(
     val id: Long,
-    val content: String,
+    val title: String,
+    val content: String
 )
