@@ -8,7 +8,7 @@ class SecurityUtil() {
     private val TOKEN_HEADER_NAME = "Authorization"
     private val TOKEN_HEADER_PREFIX = "bearer "
 
-    fun checkBearerToken(request: HttpServletRequest): String {
+    fun getBearerToken(request: HttpServletRequest): String {
         val token = request.getHeader(TOKEN_HEADER_NAME)
             ?: throw TokenNotFountException()
 
