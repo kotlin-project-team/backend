@@ -9,12 +9,14 @@ import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRe
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.entity.Comment
 import com.kotlin.study.dongambackend.domain.comment.entity.ReportComment
+import com.kotlin.study.dongambackend.domain.comment.mapper.CommentMapper
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentQueryDslRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentReportRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepository
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
+import org.springframework.data.domain.SliceImpl
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -25,11 +27,15 @@ import org.springframework.transaction.annotation.Transactional
 class CommentService(
     private val commentRepository: CommentRepository,
     private val commentReportRepository: CommentReportRepository,
-    val commentQueryDslRepository: CommentQueryDslRepository
+    val commentQueryDslRepository: CommentQueryDslRepository,
+    private val commentMapper: CommentMapper
 ) {
     @Transactional(readOnly = true)
     fun getAllComment(commentId: Long, pageable: Pageable): Slice<CommentResponse> {
-        return commentQueryDslRepository.searchCommentsBySlice(commentId, pageable)
+        val comments = commentQueryDslRepository.searchCommentsBySlice(commentId, pageable)
+        val commentResponses = commentMapper.convertCommentsToResponses(comments)
+
+        return checkLastPage(pageable, commentResponses)
     }
 
     fun createComment(commentCreateRequest: CommentCreateRequest): Long? {
@@ -70,4 +76,15 @@ class CommentService(
 
         return reportComment.id
     }
+
+    // -- 메서드 --
+
+    // 무한 스크롤
+    private fun checkLastPage(pageable: Pageable, results: List<CommentResponse>): Slice<CommentResponse> {
+        val hasNext = results.size > pageable.pageSize
+        val mutableResults = if (hasNext) results.subList(0, pageable.pageSize) else results.toMutableList()
+
+        return SliceImpl(mutableResults, pageable, hasNext)
+    }
+
 }
