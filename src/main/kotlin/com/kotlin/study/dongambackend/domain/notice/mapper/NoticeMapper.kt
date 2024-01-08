@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 @Component
 class NoticeMapper {
     fun convertCreateNoticeReqDtoToEntity(userId: Long, createRequest: NoticeCreateRequest): Notice {
-        return Notice(userId, createRequest.title, createRequest.content, createRequest.category)
+        return Notice(userId, createRequest.title, createRequest.content)
     }
 }

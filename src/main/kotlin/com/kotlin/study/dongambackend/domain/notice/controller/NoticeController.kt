@@ -1,10 +1,8 @@
 package com.kotlin.study.dongambackend.domain.notice.controller
 
 
-import com.kotlin.study.dongambackend.common.annotation.ValidateCategory
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
 import com.kotlin.study.dongambackend.common.exception.BaseException
-import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.service.NoticeService
@@ -54,11 +52,9 @@ class NoticeController(private val noticeService: NoticeService) {
 
     @GetMapping
     fun getAllNotice(
-        @RequestParam(value = "category", required = true)
-        @ValidateCategory(enumClass = BoardCategoryType::class) category: BoardCategoryType,
-                     pageable: Pageable
+        pageable: Pageable
     ): ResponseEntity<List<NoticeCategoryFreeResponse>> {
-        val notices = noticeService.getAllNotice(category, pageable)
+        val notices = noticeService.getAllNotice(pageable)
         return ResponseEntity.ok().body(notices)
     }
 
