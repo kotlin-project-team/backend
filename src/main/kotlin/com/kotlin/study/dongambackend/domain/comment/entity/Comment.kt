@@ -6,11 +6,13 @@ import lombok.Getter
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.SQLDelete
 import javax.persistence.*
 
 @Getter
 @NoArgsConstructor
 @DynamicInsert
+@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id = ?")
 @Table(name = "comment")
 @Entity
 class Comment : BaseTimeEntity {
@@ -18,15 +20,15 @@ class Comment : BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    var id: Long? = null
+    val id: Long? = null
 
     // TODO: userId 참조 필요
     @Column(name = "user_id", nullable = false)
-    var userId: Long? = 1
+    var userId: Long = 1
 
     // TODO: postId 참조 필요
     @Column(name = "post_id", nullable = false)
-    var postId: Long? = 1
+    var postId: Long = 1
 
     var content: String? = null
 
@@ -38,8 +40,8 @@ class Comment : BaseTimeEntity {
         content = _content
     }
 
-    fun updateComment(commnetUpdateRequest: CommentUpdateRequest) {
-        content = commnetUpdateRequest.content
+    fun updateComment(commentUpdateRequest: CommentUpdateRequest) {
+        content = commentUpdateRequest.content
     }
 
     fun deleteComment() {
