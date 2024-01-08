@@ -5,5 +5,5 @@ data class SignInResponse(
     val studentId: String,
     val nickname: String,
     val accessToken: String,
-    // val refreshToken: String
+    val refreshToken: String
 )
