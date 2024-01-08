@@ -6,11 +6,13 @@ import lombok.Getter
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.SQLDelete
 import javax.persistence.*
 
 @Getter
 @NoArgsConstructor
 @DynamicInsert
+@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id = ?")
 @Table(name = "comment")
 @Entity
 class Comment : BaseTimeEntity {
