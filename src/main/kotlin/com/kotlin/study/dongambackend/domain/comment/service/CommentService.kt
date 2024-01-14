@@ -13,12 +13,12 @@ import com.kotlin.study.dongambackend.domain.comment.mapper.CommentMapper
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentQueryDslRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentReportRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepository
+import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.domain.SliceImpl
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -29,6 +29,7 @@ class CommentService(
     private val commentReportRepository: CommentReportRepository,
     private val commentQueryDslRepository: CommentQueryDslRepository,
     private val commentMapper: CommentMapper
+    private val userRepository: UserRepository
 ) {
     @Transactional(readOnly = true)
     fun getAllComment(commentId: Long, pageable: Pageable): Slice<CommentResponse> {
@@ -38,14 +39,13 @@ class CommentService(
         return checkLastPage(pageable, commentResponses)
     }
 
-    fun createComment(commentCreateRequest: CommentCreateRequest): Long? {
-        val comment = Comment(commentCreateRequest.content)
-        commentRepository.save(comment)
+    fun createComment(commentCreateRequest: CommentCreateRequest, userId: Long?): Long? {
+        val user = userRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
 
-        // TODO: Unauthorized 처리
-        val commentId = comment.postId?.let { commentRepository.findById(it).orElseThrow { BaseException(ResponseStatusType.NOT_FOUND) } }
+        val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, commentCreateRequest)
+        return commentRepository.save(comment).id
 
-        return comment.id
     }
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
@@ -71,7 +71,7 @@ class CommentService(
 
     fun reportComment(commentId: Long, commentReportRequest: CommentReportRequest): Long? {
         val reportComment = ReportComment(commentReportRequest.reason, commentReportRequest.isSolved, commentId)
-        // TODO: 자신의 댓글인 경우 / Unauthorized 처리
+        // TODO: Unauthorized 처리
         commentReportRepository.save(reportComment)
 
         return reportComment.id

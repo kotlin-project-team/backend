@@ -1,16 +1,18 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
+import com.kotlin.study.dongambackend.domain.user.entity.User
 
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 import java.net.URI
