@@ -2,44 +2,44 @@ package com.kotlin.study.dongambackend.domain.comment.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
-import lombok.Getter
+import com.kotlin.study.dongambackend.domain.post.entity.Post
+import com.kotlin.study.dongambackend.domain.user.entity.User
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.Where
 import javax.persistence.*
 
 @Getter
-@NoArgsConstructor
 @DynamicInsert
+@SQLDelete(sql = "UPDATE comment SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Table(name = "comment")
 @Entity
-class Comment : BaseTimeEntity {
+class Comment(
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val userId: User,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "post_id", nullable = false)
+    val postId: Post,
+
+    var content: String? = null,
+
+    @Column(name = "is_deleted")
+    @ColumnDefault("false")
+    var isDeleted: Boolean = false,
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
-    var id: Long? = null
+    val id: Long? = null
 
-    // TODO: userId 참조 필요
-    @Column(name = "user_id", nullable = false)
-    var userId: Long? = 1
-
-    // TODO: postId 참조 필요
-    @Column(name = "post_id", nullable = false)
-    var postId: Long? = 1
-
-    var content: String? = null
-
-    @Column(name = "is_deleted")
-    @ColumnDefault("false")
-    var isDeleted: Boolean = false
-
-    constructor(_content: String) {
-        content = _content
-    }
-
-    fun updateComment(commnetUpdateRequest: CommentUpdateRequest) {
-        content = commnetUpdateRequest.content
+) : BaseTimeEntity() {
+    fun updateComment(commentUpdateRequest: CommentUpdateRequest) {
+        content = commentUpdateRequest.content
     }
 
     fun deleteComment() {

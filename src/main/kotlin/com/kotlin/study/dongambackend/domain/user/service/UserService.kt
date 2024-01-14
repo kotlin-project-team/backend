@@ -40,7 +40,6 @@ class UserService(
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
 
-        // 원본 문자열을 먼저 넣어줘야 비교가 가능하다.
         if (!passwordEncoder.matches(password, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
     }

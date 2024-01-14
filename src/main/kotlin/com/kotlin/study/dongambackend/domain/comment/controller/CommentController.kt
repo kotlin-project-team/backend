@@ -1,27 +1,31 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
-import com.kotlin.study.dongambackend.domain.comment.entity.Comment
+import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
+import com.kotlin.study.dongambackend.domain.user.entity.User
+
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+
 import java.net.URI
+
 import java.util.*
 
-
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/post/{postId}/comment")
 class CommentController(private val commentService: CommentService) {
 
     @PostMapping
     fun createComment(
+        @PathVariable postId: Long,
         @RequestBody commentCreateRequest: CommentCreateRequest
     ): ResponseEntity<Unit> {
         val commentId = commentService.createComment(commentCreateRequest)
@@ -30,6 +34,7 @@ class CommentController(private val commentService: CommentService) {
 
     @PostMapping("/report/{commentId}")
     fun reportComment(
+        @PathVariable postId: Long,
         @PathVariable commentId: Long,
         @RequestBody commentReportRequest: CommentReportRequest
     ): ResponseEntity<Unit> {
@@ -39,8 +44,9 @@ class CommentController(private val commentService: CommentService) {
 
     @PatchMapping("/{commentId}")
     fun updateComment(
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long,
         @RequestBody commentUpdateRequest: CommentUpdateRequest,
-        @PathVariable commentId: Long
     ): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             val result = commentService.updateComment(commentUpdateRequest, commentId)
@@ -51,7 +57,10 @@ class CommentController(private val commentService: CommentService) {
     }
 
     @DeleteMapping("/{commentId}")
-    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<BaseResponse<ResponseStatusType?>> {
+    fun deleteComment(
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long
+    ): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             commentService.deleteComment(commentId)
             BaseResponse<ResponseStatusType?>(ResponseStatusType.SUCCESS).convert()
@@ -60,12 +69,14 @@ class CommentController(private val commentService: CommentService) {
         }
     }
 
-    // TODO: 댓글 목록 조회 리스트 api
     @GetMapping
-    fun getAllComment(@RequestParam commentId:Long, pageable: Pageable): ResponseEntity<Slice<Comment>> {
-        val comments = commentService.getAllComment(commentId, pageable)
+    fun getAllComment(
+        @PathVariable postId: Long,
+        @RequestParam lastCommentId: Long,
+        pageable: Pageable
+    ): ResponseEntity<List<CommentResponse>> {
+        val commentsSlice = commentService.getAllComment(lastCommentId, pageable)
+        val comments = commentsSlice.content // Slice에서 content만 추출
         return ResponseEntity.ok().body(comments)
     }
-
-
 }
