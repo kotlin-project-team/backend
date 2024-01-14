@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional
 class CommentService(
     private val commentRepository: CommentRepository,
     private val commentReportRepository: CommentReportRepository,
-    val commentQueryDslRepository: CommentQueryDslRepository,
+    private val commentQueryDslRepository: CommentQueryDslRepository,
     private val commentMapper: CommentMapper
 ) {
     @Transactional(readOnly = true)
@@ -86,5 +86,4 @@ class CommentService(
 
         return SliceImpl(mutableResults, pageable, hasNext)
     }
-
 }

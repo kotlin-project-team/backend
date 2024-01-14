@@ -57,6 +57,4 @@ class NoticeController(private val noticeService: NoticeService) {
         val notices = noticeService.getAllNotice(pageable)
         return ResponseEntity.ok().body(notices)
     }
-
-
 }

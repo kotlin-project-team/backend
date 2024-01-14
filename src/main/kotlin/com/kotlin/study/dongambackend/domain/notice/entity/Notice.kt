@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
 @Getter
-@NoArgsConstructor
 @DynamicInsert
 @SQLDelete(sql = "UPDATE notice SET is_deleted = true WHERE id = ?")
 @Table(name = "notice")
