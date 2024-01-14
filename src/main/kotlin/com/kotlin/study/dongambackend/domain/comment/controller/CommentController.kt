@@ -1,17 +1,17 @@
 package com.kotlin.study.dongambackend.domain.comment.controller
 
-import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
-import com.kotlin.study.dongambackend.domain.comment.entity.Comment
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
+import com.kotlin.study.dongambackend.domain.user.entity.User
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.util.*
@@ -23,11 +23,12 @@ class CommentController(private val commentService: CommentService) {
 
     @PostMapping("/post/comment")
     fun createComment(
-        @RequestBody commentCreateRequest: CommentCreateRequest
-    ): ResponseEntity<Unit> {
-        val commentId = commentService.createComment(commentCreateRequest)
+        @RequestBody commentCreateRequest: CommentCreateRequest, @AuthenticationPrincipal user: User
+        ): ResponseEntity<Unit> {
+        val commentId = commentService.createComment(commentCreateRequest, user.id)
         return ResponseEntity.created(URI.create("/api/comment/${commentId}")).build()
     }
+
 
     @PostMapping("/comment/report/{commentId}")
     fun reportComment(
@@ -67,7 +68,6 @@ class CommentController(private val commentService: CommentService) {
         val comments = commentsSlice.content // Slice에서 content만 추출
         return ResponseEntity.ok().body(comments)
     }
-
 
 
 }
