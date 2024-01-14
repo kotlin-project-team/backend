@@ -16,9 +16,6 @@ class PostQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
 
     val qPost = QPost.post;
 
-    /**
-     * isDeleted = true인 게시물 제외한 전체 게시물 리스트 페이지네이션
-     */
     fun findAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
         return queryDslFactory
             .select(
