@@ -30,7 +30,8 @@ class PostService(
     @Transactional(readOnly = true)
     fun getAllPost(pageable: Pageable, category: BoardCategoryType): GetAllPostByCategoryResponse {
         val result = postQueryDslRepository.findAllPost(pageable, category)
-        return postMapper.toGetAllPostResponse(result)
+        val postCount = postRepository.findCountByCategory(category.toString())
+        return postMapper.toGetAllPostResponse(result, postCount)
     }
 
     @Transactional(readOnly = true)

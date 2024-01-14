@@ -15,7 +15,7 @@ class PostMapper {
         return Post(user, createRequest.title, createRequest.content, createRequest.category)
     }
 
-    fun toGetAllPostResponse(posts: List<FindAllPostByCategory>): GetAllPostByCategoryResponse {
-        return GetAllPostByCategoryResponse(posts, posts.size)
+    fun toGetAllPostResponse(posts: List<FindAllPostByCategory>, postCount: Int): GetAllPostByCategoryResponse {
+        return GetAllPostByCategoryResponse(posts, postCount)
     }
 }
