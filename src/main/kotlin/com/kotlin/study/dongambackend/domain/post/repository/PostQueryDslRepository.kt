@@ -1,8 +1,8 @@
 package com.kotlin.study.dongambackend.domain.post.repository
 
 import com.kotlin.study.dongambackend.common.type.BoardCategoryType
-import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
-import com.kotlin.study.dongambackend.domain.post.dto.response.QGetAllPostByCategoryResponse
+import com.kotlin.study.dongambackend.domain.post.dto.response.FindAllPostByCategory
+import com.kotlin.study.dongambackend.domain.post.dto.response.QFindAllPostByCategory
 import com.kotlin.study.dongambackend.domain.post.dto.response.QUserInformation
 import com.kotlin.study.dongambackend.domain.post.entity.QPost
 
@@ -16,10 +16,10 @@ class PostQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
 
     val qPost = QPost.post;
 
-    fun findAllPost(pageable: Pageable, category: BoardCategoryType): List<GetAllPostByCategoryResponse> {
+    fun findAllPost(pageable: Pageable, category: BoardCategoryType): List<FindAllPostByCategory> {
         return queryDslFactory
             .select(
-                QGetAllPostByCategoryResponse(
+                QFindAllPostByCategory(
                     qPost.id,
                     QUserInformation(
                         qPost.userId.id,

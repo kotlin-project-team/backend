@@ -28,8 +28,9 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable, category: BoardCategoryType): List<GetAllPostByCategoryResponse> {
-        return postQueryDslRepository.findAllPost(pageable, category)
+    fun getAllPost(pageable: Pageable, category: BoardCategoryType): GetAllPostByCategoryResponse {
+        val result = postQueryDslRepository.findAllPost(pageable, category)
+        return postMapper.toGetAllPostResponse(result)
     }
 
     @Transactional(readOnly = true)
