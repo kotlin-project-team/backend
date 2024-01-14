@@ -4,7 +4,7 @@ import com.kotlin.study.dongambackend.common.type.BoardCategoryType
 import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
-import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
@@ -28,8 +28,10 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
-        return postQueryDslRepository.findAllPost(pageable, category)
+    fun getAllPost(pageable: Pageable, category: BoardCategoryType): GetAllPostByCategoryResponse {
+        val result = postQueryDslRepository.findAllPost(pageable, category)
+        val postCount = postRepository.findCountByCategory(category.toString())
+        return postMapper.toGetAllPostResponse(result, postCount)
     }
 
     @Transactional(readOnly = true)

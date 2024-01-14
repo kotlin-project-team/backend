@@ -1,9 +1,11 @@
 package com.kotlin.study.dongambackend.security.util
 
 import com.kotlin.study.dongambackend.security.exception.TokenNotFountException
+import org.springframework.stereotype.Component
 import javax.servlet.http.HttpServletRequest
 
-class SecurityUtil() {
+@Component
+class SecurityUtil {
 
     private val TOKEN_HEADER_NAME = "Authorization"
     private val TOKEN_HEADER_PREFIX = "bearer "
