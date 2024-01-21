@@ -4,7 +4,8 @@ import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.user.entity.User
-import lombok.NoArgsConstructor
+import lombok.Getter
+
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
@@ -23,7 +24,7 @@ class Comment(
     val userId: User,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     val postId: Post,
 
     var content: String? = null,

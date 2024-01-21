@@ -28,7 +28,7 @@ class CommentService(
     private val commentRepository: CommentRepository,
     private val commentReportRepository: CommentReportRepository,
     private val commentQueryDslRepository: CommentQueryDslRepository,
-    private val commentMapper: CommentMapper
+    private val commentMapper: CommentMapper,
     private val userRepository: UserRepository
 ) {
     @Transactional(readOnly = true)
@@ -39,13 +39,12 @@ class CommentService(
         return checkLastPage(pageable, commentResponses)
     }
 
-    fun createComment(commentCreateRequest: CommentCreateRequest, userId: Long?): Long? {
+    fun createComment(commentCreateRequest: CommentCreateRequest, userId: Long? = 1L): Long? {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
 
         val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, commentCreateRequest)
         return commentRepository.save(comment).id
-
     }
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
