@@ -1,21 +1,20 @@
 package com.kotlin.study.dongambackend.domain.user.mapper
 
-import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
-import com.kotlin.study.dongambackend.domain.user.entity.Role
+import com.kotlin.study.dongambackend.domain.user.dto.request.CreateUserRequest
 import com.kotlin.study.dongambackend.domain.user.entity.User
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import com.kotlin.study.dongambackend.domain.user.validator.type.UserRole
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
 class UserMapper {
 
-    fun convertCreateUserReqDtoToEntity(createRequest: UserCreateRequest, passwordEncoder: PasswordEncoder) =
+    fun convertCreateUserReqDtoToEntity(createRequest: CreateUserRequest, passwordEncoder: PasswordEncoder) =
         User(
             createRequest.studentId,
             passwordEncoder.encode(createRequest.password),
             createRequest.nickname,
-            Role.USER,
+            UserRole.USER,
             createRequest.deviceToken
         )
 }

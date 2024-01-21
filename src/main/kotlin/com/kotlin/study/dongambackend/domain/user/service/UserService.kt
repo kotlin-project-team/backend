@@ -3,7 +3,7 @@ package com.kotlin.study.dongambackend.domain.user.service
 import com.kotlin.study.dongambackend.domain.user.dto.request.SignInRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
-import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
+import com.kotlin.study.dongambackend.domain.user.dto.request.CreateUserRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
 import com.kotlin.study.dongambackend.domain.user.dto.response.SignInResponse
 import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
@@ -23,7 +23,7 @@ class UserService(
     private val tokenProvider: TokenProvider
 ) {
 
-    fun createUser(userCreateRequest: UserCreateRequest): Long? {
+    fun createUser(userCreateRequest: CreateUserRequest): Long? {
         val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest, passwordEncoder)
         return userRepository.save(user).id
     }
