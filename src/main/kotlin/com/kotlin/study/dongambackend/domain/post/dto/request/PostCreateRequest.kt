@@ -1,6 +1,6 @@
 package com.kotlin.study.dongambackend.domain.post.dto.request
 
-import com.kotlin.study.dongambackend.common.type.BoardCategoryType
+import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
@@ -12,5 +12,5 @@ data class PostCreateRequest (
     @field:NotEmpty(message = "내용을 입력해주세요.")
     val content: String?,
 
-    val category: BoardCategoryType,
+    val category: BoardCategory,
 )

@@ -1,7 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
-import com.kotlin.study.dongambackend.common.type.BoardCategoryType
-import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
+import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
+import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
@@ -28,7 +28,7 @@ class PostService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getAllPost(pageable: Pageable, category: BoardCategoryType): GetAllPostByCategoryResponse {
+    fun getAllPost(pageable: Pageable, category: BoardCategory): GetAllPostByCategoryResponse {
         val result = postQueryDslRepository.findAllPost(pageable, category)
         val postCount = postRepository.findCountByCategory(category.toString())
         return postMapper.toGetAllPostResponse(result, postCount)
@@ -63,7 +63,7 @@ class PostService(
     fun clickPostLike(postId: Long, userId: Long) {
         if (isExistedPost(postId)) {
             val postLike = postLikeRepository.findById(userId, postId)
-                ?: PostLike(PostLikeKey(userId, postId))
+                ?: PostLike(PostLikeId(userId, postId))
             postLike.updatePostLike()
             postLikeRepository.save(postLike)
         }

@@ -1,13 +1,14 @@
-package com.kotlin.study.dongambackend.common.annotation
+package com.kotlin.study.dongambackend.domain.post.validator
 
+import com.kotlin.study.dongambackend.domain.user.validator.ValidateUserRole
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
 
-class TypeValidator : ConstraintValidator<ValidateCategory, String> {
+class CategoryValidator : ConstraintValidator<ValidateUserRole, String> {
 
-    lateinit var validateCategory: ValidateCategory
+    lateinit var validateCategory: ValidateUserRole
 
-    override fun initialize(constraintAnnotation: ValidateCategory) {
+    override fun initialize(constraintAnnotation: ValidateUserRole) {
         this.validateCategory = constraintAnnotation
     }
 

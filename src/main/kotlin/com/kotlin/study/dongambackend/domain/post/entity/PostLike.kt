@@ -1,7 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
-import com.kotlin.study.dongambackend.domain.post.dto.entitykey.PostLikeKey
+import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 
 import org.hibernate.annotations.Where
 
@@ -13,7 +13,7 @@ import javax.persistence.Entity
 @Where(clause = "is_deleted = false")
 class PostLike(
     @EmbeddedId
-    val id: PostLikeKey,
+    val id: PostLikeId,
 
     @Column(name = "is_deleted", nullable = false)
     var isDeleted: Boolean? = null
