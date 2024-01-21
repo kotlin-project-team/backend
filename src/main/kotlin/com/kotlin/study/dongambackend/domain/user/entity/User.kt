@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.user.entity
 
 import com.kotlin.study.dongambackend.common.entity.BaseTimeEntity
+import com.kotlin.study.dongambackend.domain.user.validator.type.UserRole
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
 import org.hibernate.annotations.SQLDelete
@@ -8,7 +9,6 @@ import org.hibernate.annotations.Where
 import org.springframework.security.crypto.password.PasswordEncoder
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 @Table(
     name = "member",
@@ -33,7 +33,7 @@ class User(
     var nickname: String,
 
     @Enumerated(EnumType.STRING)
-    val role: Role,
+    val role: UserRole,
 
     // 추후 NoSQL로 마이그레이션
     @Column(name = "device_token", unique = true)

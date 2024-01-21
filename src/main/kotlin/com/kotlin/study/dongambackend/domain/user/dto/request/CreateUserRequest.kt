@@ -1,9 +1,11 @@
 package com.kotlin.study.dongambackend.domain.user.dto.request
 
+import com.kotlin.study.dongambackend.domain.user.validator.ValidateUserRole
+import com.kotlin.study.dongambackend.domain.user.validator.type.UserRole
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
-data class UserCreateRequest(
+data class CreateUserRequest(
     @field:NotBlank(message = "학번 값은 필수입니다.")
     val studentId: String,
 
@@ -18,5 +20,8 @@ data class UserCreateRequest(
     val nickname: String,
 
     @field:NotBlank(message = "디바이스 토큰 값은 필수입니다.")
-    val deviceToken: String
+    val deviceToken: String,
+
+    @field:ValidateUserRole(enumClass = UserRole::class, message = "올바른 권한이 필요합니다.")
+    val role: String
 )

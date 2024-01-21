@@ -13,8 +13,8 @@ import javax.validation.Valid
 @RequestMapping("/api/user")
 class UserController(private val userService: UserService) {
 
-    @PostMapping
-    fun createUser(@Valid @RequestBody userCreateRequest: UserCreateRequest): ResponseEntity<Unit> {
+    @PostMapping("/sign-up")
+    fun createUser(@Valid @RequestBody userCreateRequest: CreateUserRequest): ResponseEntity<Unit> {
         val userId = userService.createUser(userCreateRequest)
         return ResponseEntity.created(URI.create("/api/user/$userId")).build()
     }
