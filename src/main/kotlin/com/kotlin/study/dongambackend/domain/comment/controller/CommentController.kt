@@ -28,7 +28,7 @@ class CommentController(private val commentService: CommentService) {
         @PathVariable postId: Long,
         @RequestBody commentCreateRequest: CommentCreateRequest
     ): ResponseEntity<Unit> {
-        val commentId = commentService.createComment(commentCreateRequest)
+        val commentId = commentService.createComment(commentCreateRequest, postId)
         return ResponseEntity.created(URI.create("/api/comment/${commentId}")).build()
     }
 
@@ -56,9 +56,11 @@ class CommentController(private val commentService: CommentService) {
         }
     }
 
-
-    @DeleteMapping("/comment/{commentId}")
-    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<BaseResponse<ResponseStatusType?>> {
+    @DeleteMapping("/{commentId}")
+    fun deleteComment(
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long
+    ): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             commentService.deleteComment(commentId)
             BaseResponse<ResponseStatusType?>(ResponseStatusType.SUCCESS).convert()
