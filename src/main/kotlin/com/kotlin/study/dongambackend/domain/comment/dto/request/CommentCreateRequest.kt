@@ -8,5 +8,4 @@ data class CommentCreateRequest (
     
     @field:NotEmpty(message = "내용을 입력해주세요.")
     var content: String,
-) {
-}
+)

@@ -17,6 +17,7 @@ class NoticeQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
             .select(
                 QNoticeCategoryFreeResponse(
                     qNotice.id,
+                    qNotice.title,
                     qNotice.content,
                 )
             ).from(qNotice)

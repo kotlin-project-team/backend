@@ -1,12 +1,10 @@
 package com.kotlin.study.dongambackend.domain.post.controller
 
-import com.kotlin.study.dongambackend.common.annotation.ValidateCategory
-import com.kotlin.study.dongambackend.common.dto.BaseResponse
-import com.kotlin.study.dongambackend.common.type.BoardCategoryType
-import com.kotlin.study.dongambackend.common.type.ResponseStatusType
+import com.kotlin.study.dongambackend.domain.post.validator.ValidateCategory
+import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
-import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.service.PostService
 
@@ -28,8 +26,8 @@ class PostController(private val postService: PostService) {
     fun getAllPost(
         pageable: Pageable,
         @RequestParam(value = "category", required = true)
-        @ValidateCategory(enumClass = BoardCategoryType::class) category: BoardCategoryType
-    ): ResponseEntity<List<PostCategoryFreeResponse>> {
+        @ValidateCategory(enumClass = BoardCategory::class) category: BoardCategory
+    ): ResponseEntity<GetAllPostByCategoryResponse> {
         val posts = postService.getAllPost(pageable, category)
         return ResponseEntity.ok().body(posts)
     }

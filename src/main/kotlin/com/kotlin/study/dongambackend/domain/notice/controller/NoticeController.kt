@@ -22,7 +22,7 @@ class NoticeController(private val noticeService: NoticeService) {
     fun createNotice(
         @RequestBody noticeCreateRequest: NoticeCreateRequest
     ): ResponseEntity<Unit> {
-        val noticeId = noticeService.createNotice(noticeCreateRequest)
+        val noticeId = noticeService.createNotice(noticeCreateRequest, 1L)
         return ResponseEntity.created(URI.create("/api/notice/${noticeId}")).build()
     }
 
@@ -57,6 +57,4 @@ class NoticeController(private val noticeService: NoticeService) {
         val notices = noticeService.getAllNotice(pageable)
         return ResponseEntity.ok().body(notices)
     }
-
-
 }

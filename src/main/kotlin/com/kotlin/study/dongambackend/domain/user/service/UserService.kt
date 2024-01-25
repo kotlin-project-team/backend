@@ -3,7 +3,7 @@ package com.kotlin.study.dongambackend.domain.user.service
 import com.kotlin.study.dongambackend.domain.user.dto.request.SignInRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
-import com.kotlin.study.dongambackend.domain.user.dto.request.UserCreateRequest
+import com.kotlin.study.dongambackend.domain.user.dto.request.CreateUserRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
 import com.kotlin.study.dongambackend.domain.user.dto.response.SignInResponse
 import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
@@ -23,7 +23,7 @@ class UserService(
     private val tokenProvider: TokenProvider
 ) {
 
-    fun createUser(userCreateRequest: UserCreateRequest): Long? {
+    fun createUser(userCreateRequest: CreateUserRequest): Long? {
         val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest, passwordEncoder)
         return userRepository.save(user).id
     }
@@ -40,7 +40,6 @@ class UserService(
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
 
-        // 원본 문자열을 먼저 넣어줘야 비교가 가능하다.
         if (!passwordEncoder.matches(password, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
     }

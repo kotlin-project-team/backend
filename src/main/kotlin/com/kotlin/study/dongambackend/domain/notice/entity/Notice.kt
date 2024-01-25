@@ -6,31 +6,36 @@ import lombok.Getter
 import lombok.NoArgsConstructor
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.DynamicInsert
+import org.hibernate.annotations.SQLDelete
+import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
 @Getter
-@NoArgsConstructor
 @DynamicInsert
+@SQLDelete(sql = "UPDATE notice SET is_deleted = true WHERE id = ?")
 @Table(name = "notice")
 @Entity
-class Notice : BaseTimeEntity {
+class Notice(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    var id: Long? = null
+    @Column(name = "user_id", nullable = false)
+    val userId: Long,
 
-    var content: String? = null
+    @NotNull
+    var title: String?,
+
+    var content: String?,
 
     @Column(name = "is_deleted")
     @ColumnDefault("false")
-    var isDeleted: Boolean = false
+    var isDeleted: Boolean = false,
 
-    constructor(_content: String) {
-        content = _content
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    val id: Long? = null
+) : BaseTimeEntity() {
     fun updateNotice(noticeUpdateRequest: NoticeUpdateRequest) {
         content = noticeUpdateRequest.content
+        title = noticeUpdateRequest.title
     }
 
     fun deleteNotice() {

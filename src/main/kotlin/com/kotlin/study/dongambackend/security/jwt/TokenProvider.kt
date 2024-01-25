@@ -27,7 +27,6 @@ class TokenProvider(
     @Value("\${refresh-token-time}") private val refreshTokenTime: Long,
     private val redisTemplate: RedisTemplate<String, String>
 ) {
-    private val ACCESS_TOKEN_HEADER = "bearer "
 
     fun createAccessToken(role: String, studentId: String): String {
         return this.createToken(role, studentId, accessTokenTime)

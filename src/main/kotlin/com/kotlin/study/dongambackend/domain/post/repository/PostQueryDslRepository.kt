@@ -1,8 +1,8 @@
 package com.kotlin.study.dongambackend.domain.post.repository
 
-import com.kotlin.study.dongambackend.common.type.BoardCategoryType
-import com.kotlin.study.dongambackend.domain.post.dto.response.PostCategoryFreeResponse
-import com.kotlin.study.dongambackend.domain.post.dto.response.QPostCategoryFreeResponse
+import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
+import com.kotlin.study.dongambackend.domain.post.dto.response.FindAllPostByCategory
+import com.kotlin.study.dongambackend.domain.post.dto.response.QFindAllPostByCategory
 import com.kotlin.study.dongambackend.domain.post.dto.response.QUserInformation
 import com.kotlin.study.dongambackend.domain.post.entity.QPost
 
@@ -16,13 +16,10 @@ class PostQueryDslRepository(val queryDslFactory: JPAQueryFactory) {
 
     val qPost = QPost.post;
 
-    /**
-     * isDeleted = true인 게시물 제외한 전체 게시물 리스트 페이지네이션
-     */
-    fun findAllPost(pageable: Pageable, category: BoardCategoryType): List<PostCategoryFreeResponse> {
+    fun findAllPost(pageable: Pageable, category: BoardCategory): List<FindAllPostByCategory> {
         return queryDslFactory
             .select(
-                QPostCategoryFreeResponse(
+                QFindAllPostByCategory(
                     qPost.id,
                     QUserInformation(
                         qPost.userId.id,

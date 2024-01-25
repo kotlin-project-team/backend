@@ -1,13 +1,12 @@
 package com.kotlin.study.dongambackend.security.config
 
-import com.kotlin.study.dongambackend.domain.user.entity.Role
+import com.kotlin.study.dongambackend.domain.user.validator.type.UserRole
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.DefaultSecurityFilterChain
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 @EnableWebSecurity
@@ -19,10 +18,9 @@ class WebSecurityConfig {
         .httpBasic().disable()
         .formLogin().disable()
         .authorizeHttpRequests {
-//            it.antMatchers("/api/user/", "/api/user/sign-in").permitAll()
-//                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.toString())
-//                .antMatchers("/api/**").hasRole(Role.USER.toString())
-            it.antMatchers("/api/**").permitAll()
+            it.antMatchers("/api/user/sign-in", "/api/user/sign-up").permitAll()
+                .antMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
+                .antMatchers("/api/**").hasRole(UserRole.USER.toString())
         }
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
