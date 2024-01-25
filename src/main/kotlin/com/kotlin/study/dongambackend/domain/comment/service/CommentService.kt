@@ -30,6 +30,7 @@ class CommentService(
     private val commentQueryDslRepository: CommentQueryDslRepository,
     private val commentMapper: CommentMapper,
     private val userRepository: UserRepository
+    //postReposistory
 ) {
     @Transactional(readOnly = true)
     fun getAllComment(commentId: Long, pageable: Pageable): Slice<CommentResponse> {

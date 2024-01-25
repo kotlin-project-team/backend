@@ -56,11 +56,9 @@ class CommentController(private val commentService: CommentService) {
         }
     }
 
-    @DeleteMapping("/{commentId}")
-    fun deleteComment(
-        @PathVariable postId: Long,
-        @PathVariable commentId: Long
-    ): ResponseEntity<BaseResponse<ResponseStatusType?>> {
+
+    @DeleteMapping("/comment/{commentId}")
+    fun deleteComment(@PathVariable commentId: Long): ResponseEntity<BaseResponse<ResponseStatusType?>> {
         return try {
             commentService.deleteComment(commentId)
             BaseResponse<ResponseStatusType?>(ResponseStatusType.SUCCESS).convert()
