@@ -23,23 +23,23 @@ class Post(
     val userId: User,
 
     @NotNull
-    var title: String?,
+    var title: String,
 
-    var content: String?,
+    var content: String,
 
     @NotNull
     @Enumerated(EnumType.STRING)
     val category: BoardCategory,
 
     @ColumnDefault("0")
-    val likes: Int? = 0,
+    val likes: Int = 0,
 
     @ColumnDefault("0")
-    val views: Int? = 0,
+    val views: Int = 0,
 
     @Column(name = "is_deleted")
     @ColumnDefault("false")
-    val isDeleted: Boolean? = false,
+    val isDeleted: Boolean = false,
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -47,7 +47,7 @@ class Post(
 ) : BaseTimeEntity() {
 
     fun updatePost(postUpdateRequest: PostUpdateRequest) {
-        title = postUpdateRequest.title
-        content = postUpdateRequest.content
+        title = postUpdateRequest.title ?: ""
+        content = postUpdateRequest.content ?: ""
     }
 }

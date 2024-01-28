@@ -18,9 +18,10 @@ class WebSecurityConfig {
         .httpBasic().disable()
         .formLogin().disable()
         .authorizeHttpRequests {
-            it.antMatchers("/api/user/sign-in", "/api/user/sign-up").permitAll()
-                .antMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
-                .antMatchers("/api/**").hasRole(UserRole.USER.toString())
+//            it.antMatchers("/api/user/sign-in", "/api/user/sign-up").permitAll()
+//                .antMatchers("/api/admin/**").hasRole(UserRole.ADMIN.toString())
+//                .antMatchers("/api/**").hasRole(UserRole.USER.toString())
+            it.antMatchers("/api/**").permitAll()
         }
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
