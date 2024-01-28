@@ -5,6 +5,7 @@ import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
@@ -35,9 +36,11 @@ class PostService(
     }
 
     @Transactional(readOnly = true)
-    fun getPostById(postId: Long): Post? {
-        return postRepository.findByIdOrNull(postId)
+    fun getPostById(postId: Long): GetPostByIdResponse? {
+        val post =  postRepository.findByIdOrNull(postId)
             ?: throw NoSuchElementException()
+
+        return postMapper.toPostResponse(post)
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {

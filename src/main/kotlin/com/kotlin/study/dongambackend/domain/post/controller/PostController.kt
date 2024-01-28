@@ -5,7 +5,7 @@ import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
-import com.kotlin.study.dongambackend.domain.post.entity.Post
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import com.kotlin.study.dongambackend.domain.post.service.PostService
 
 import org.springframework.data.domain.Pageable
@@ -33,7 +33,7 @@ class PostController(private val postService: PostService) {
     }
 
     @GetMapping("/{postId}")
-    fun getPostById(@PathVariable postId: Long): ResponseEntity<Post> {
+    fun getPostById(@PathVariable postId: Long): ResponseEntity<GetPostByIdResponse> {
         val post = postService.getPostById(postId)
         return ResponseEntity.ok().body(post)
     }
