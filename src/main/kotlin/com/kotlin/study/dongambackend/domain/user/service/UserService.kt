@@ -9,7 +9,7 @@ import com.kotlin.study.dongambackend.domain.user.dto.response.SignInResponse
 import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
 import com.kotlin.study.dongambackend.domain.user.mapper.UserMapper
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
-import com.kotlin.study.dongambackend.security.jwt.TokenProvider
+import com.kotlin.study.dongambackend.security.util.TokenProvider
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

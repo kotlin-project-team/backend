@@ -1,4 +1,4 @@
-package com.kotlin.study.dongambackend.security.jwt
+package com.kotlin.study.dongambackend.security.util
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
