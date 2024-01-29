@@ -28,7 +28,7 @@ class CommentController(private val commentService: CommentService) {
         @PathVariable postId: Long,
         @RequestBody commentCreateRequest: CommentCreateRequest
     ): ResponseEntity<Unit> {
-        val commentId = commentService.createComment(commentCreateRequest)
+        val commentId = commentService.createComment(commentCreateRequest, postId)
         return ResponseEntity.created(URI.create("/api/comment/${commentId}")).build()
     }
 

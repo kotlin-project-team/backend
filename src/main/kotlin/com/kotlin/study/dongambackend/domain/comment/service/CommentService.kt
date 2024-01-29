@@ -13,6 +13,7 @@ import com.kotlin.study.dongambackend.domain.comment.mapper.CommentMapper
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentQueryDslRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentReportRepository
 import com.kotlin.study.dongambackend.domain.comment.repository.CommentRepository
+import com.kotlin.study.dongambackend.domain.post.repository.PostRepository
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
@@ -29,7 +30,8 @@ class CommentService(
     private val commentReportRepository: CommentReportRepository,
     private val commentQueryDslRepository: CommentQueryDslRepository,
     private val commentMapper: CommentMapper,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val postRepository: PostRepository
 ) {
     @Transactional(readOnly = true)
     fun getAllComment(commentId: Long, pageable: Pageable): Slice<CommentResponse> {
@@ -39,18 +41,20 @@ class CommentService(
         return checkLastPage(pageable, commentResponses)
     }
 
-    fun createComment(commentCreateRequest: CommentCreateRequest, userId: Long? = 1L): Long? {
+    fun createComment(commentCreateRequest: CommentCreateRequest, postId: Long, userId: Long? = 1L): Long? {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NoSuchElementException()
+        val post = postRepository.findByIdOrNull(userId)
+            ?: throw NoSuchElementException()
 
-        val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, commentCreateRequest)
+        val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, post, commentCreateRequest)
         return commentRepository.save(comment).id
     }
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
         val comment = commentRepository.findByIdOrNull(commentId)
             ?: throw BaseException(ResponseStatusType.BAD_REQUEST)
-        
+
         // TODO: Unauthorized 및 ForbiddenToken 처리
         comment.postId ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         comment.updateComment(commentUpdateRequest)
