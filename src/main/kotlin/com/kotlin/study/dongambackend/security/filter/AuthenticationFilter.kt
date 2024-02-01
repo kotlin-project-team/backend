@@ -1,6 +1,5 @@
 package com.kotlin.study.dongambackend.security.filter
 
-import com.kotlin.study.dongambackend.security.util.SecurityUtil
 import com.kotlin.study.dongambackend.security.util.TokenProvider
 import org.springframework.core.annotation.Order
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -16,17 +15,17 @@ import javax.servlet.http.HttpServletResponse
 
 @Order(0)
 @Component
-class AuthenticationFilter(private val tokenProvider: TokenProvider, private val securityUtil: SecurityUtil) : OncePerRequestFilter() {
+class AuthenticationFilter(private val tokenProvider: TokenProvider) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val accessToken = securityUtil.getBearerToken(request)
+        val accessToken = tokenProvider.getBearerToken(request)
 
         if (accessToken != null) {
-            val user = securityUtil.getUserFromToken(accessToken)
+            val user = tokenProvider.getUserIdFromToken(accessToken)
 
             UsernamePasswordAuthenticationToken(user, accessToken)
                 .apply { details = WebAuthenticationDetails(request) }
