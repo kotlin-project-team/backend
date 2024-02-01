@@ -16,33 +16,35 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 import java.util.*
+import javax.annotation.PostConstruct
 
 import javax.crypto.spec.SecretKeySpec
 
 @PropertySource("classpath:application-jwt.yml")
 @Component
 class TokenProvider(
-    @Value("\${secret-key}") private val secretKey: String,
+    @Value("\${secret-key}") private var secretKey: String,
     @Value("\${access-token-time}") private val accessTokenTime: Long,
     @Value("\${refresh-token-time}") private val refreshTokenTime: Long,
     private val redisTemplate: RedisTemplate<String, String>
 ) {
 
-    fun createAccessToken(role: String, studentId: String): String {
-        return this.createToken(role, studentId, accessTokenTime)
+    fun createAccessToken(role: String, userId: Long): String {
+        return this.createToken(role, userId, accessTokenTime)
     }
 
-    fun createRefreshToken(role: String, studentId: String): String {
-        val refreshToken = this.createToken(role, studentId, refreshTokenTime)
+    fun createRefreshToken(role: String, userId: Long): String {
+        val refreshToken = this.createToken(role, userId, refreshTokenTime)
         val valueOperations = redisTemplate.opsForValue()
-        valueOperations.set(studentId, refreshToken, Duration.ofMillis(refreshTokenTime))
+        valueOperations.set(userId.toString(), refreshToken, Duration.ofMillis(refreshTokenTime))
 
         return refreshToken
     }
 
-    private fun createToken(role: String, studentId: String, durationTime: Long): String {
-        val claims = Jwts.claims().setSubject(studentId)
-        claims.put("Role", role)
+    private fun createToken(role: String, userId: Long, durationTime: Long): String {
+        val claims = Jwts.claims()
+        claims["userId"] = userId
+        claims["Role"] = role
 
         return Jwts.builder()
             .signWith(SecretKeySpec(secretKey.toByteArray(), SignatureAlgorithm.HS256.jcaName))

@@ -74,8 +74,8 @@ class UserService(
         if (!passwordEncoder.matches(signInRequest.password, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
 
-        val accessToken = tokenProvider.createAccessToken(user.role.toString(), user.studentId)
-        val refreshToken = tokenProvider.createRefreshToken(user.role.toString(), user.studentId)
+        val accessToken = tokenProvider.createAccessToken(user.role.toString(), user.id!!)
+        val refreshToken = tokenProvider.createRefreshToken(user.role.toString(), user.id!!)
 
         return SignInResponse(
             user.id!!,
