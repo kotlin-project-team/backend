@@ -1,6 +1,5 @@
 package com.kotlin.study.dongambackend.security.config
 
-import com.kotlin.study.dongambackend.domain.user.validator.type.UserRole
 import com.kotlin.study.dongambackend.security.filter.AuthenticationFilter
 
 import org.springframework.context.annotation.Bean
@@ -22,10 +21,10 @@ class WebSecurityConfig(private val authenticationFilter: AuthenticationFilter) 
         .formLogin().disable()
         .headers { it.frameOptions().sameOrigin() }
         .authorizeHttpRequests {
-            it.antMatchers("/api/user/sign-in", "/api/user/sign-up").permitAll()
-                .antMatchers("/api/admin/**").hasRole(UserRole.ROLE_ADMIN.toString())
-                .antMatchers("/api/**").hasRole(UserRole.ROLE_USER.toString())
-//            it.antMatchers("/api/**").permitAll()
+//            it.antMatchers("/api/user/sign-in", "/api/user/sign-up").permitAll()
+//                .antMatchers("/api/admin/**").hasRole(UserRole.ROLE_ADMIN.toString())
+//                .antMatchers("/api/**").hasRole(UserRole.ROLE_USER.toString())
+            it.antMatchers("/api/**").permitAll()
         }
         .sessionManagement {
             it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
