@@ -14,7 +14,7 @@ class UserMapper {
             createRequest.studentId,
             passwordEncoder.encode(createRequest.password),
             createRequest.nickname,
-            UserRole.USER,
+            UserRole.ROLE_USER,
             createRequest.deviceToken
         )
 }
