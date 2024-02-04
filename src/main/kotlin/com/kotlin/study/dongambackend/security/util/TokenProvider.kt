@@ -61,8 +61,8 @@ class TokenProvider(
         return Jwts.builder()
             .signWith(signingKey, SignatureAlgorithm.HS256)
             .setClaims(claims)
-            .setIssuedAt(Date())
-            .setExpiration(Date.from(Instant.now().plusMillis(durationTime)))
+            .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))
+            .setExpiration(Date.from(Instant.now().plus(durationTime, ChronoUnit.HOURS)))
             .compact()
     }
 
@@ -72,15 +72,18 @@ class TokenProvider(
         return token?.takeIf { it.startsWith(TOKEN_HEADER_PREFIX) }?.substring(7)
     }
 
-    fun getUserIdFromToken(token: String) = token.let { this.getSubjectFromToken(it)["userId"] }
+    fun getUserIdFromToken(token: String) = token.let { this.getSubjectFromToken(it) }
 
     private fun getSubjectFromToken(token: String): Claims {
         val signingKey = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 
-        return Jwts.parserBuilder()
+        val result = Jwts.parserBuilder()
             .setSigningKey(signingKey)
             .build()
             .parseClaimsJws(token)
             .body
+
+        println(result)
+        return result
     }
 }
