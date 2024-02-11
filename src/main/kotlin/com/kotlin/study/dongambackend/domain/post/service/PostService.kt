@@ -38,8 +38,7 @@ class PostService(
 
     @Transactional(readOnly = true)
     fun getPostById(postId: Long): GetPostByIdResponse? {
-        val post =  postRepository.findByIdOrNull(postId)
-            ?: throw NotFoundException()
+        val post = this.getPost(postId)
 
         return postMapper.toPostResponse(post)
     }
@@ -53,28 +52,27 @@ class PostService(
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        val post = postRepository.findByIdOrNull(postId)
-            ?: throw NotFoundException()
+        val post = this.getPost(postId)
+
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
 
     fun deletePost(postId: Long) {
-        if (isExistedPost(postId)) {
-            postRepository.deleteById(postId)
-        }
+        this.getPost(postId)
+
+        postRepository.deleteById(postId)
     }
 
     fun clickPostLike(postId: Long, userId: Long) {
-        if (isExistedPost(postId)) {
-            val postLike = postLikeRepository.findById(userId, postId)
-                ?: PostLike(PostLikeId(userId, postId))
-            postLike.updatePostLike()
-            postLikeRepository.save(postLike)
-        }
+        this.getPost(postId)
+
+        val postLike = postLikeRepository.findById(userId, postId)
+            ?: PostLike(PostLikeId(userId, postId))
+        postLike.updatePostLike()
+        postLikeRepository.save(postLike)
     }
 
-    private fun isExistedPost(postId: Long): Boolean {
-        return postRepository.findById(postId).isPresent
-    }
+    private fun getPost(postId: Long) = postRepository.findByIdOrNull(postId)
+        ?: throw NotFoundException()
 }
