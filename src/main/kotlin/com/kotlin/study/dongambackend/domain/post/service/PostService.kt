@@ -38,7 +38,7 @@ class PostService(
     @Transactional(readOnly = true)
     fun getPostById(postId: Long): GetPostByIdResponse? {
         val post =  postRepository.findByIdOrNull(postId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         return postMapper.toPostResponse(post)
     }

@@ -1,5 +1,6 @@
 package com.kotlin.study.dongambackend.domain.user.service
 
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.domain.user.dto.request.SignInRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
@@ -31,14 +32,14 @@ class UserService(
     @Transactional(readOnly = true)
     fun getMyInformation(userId: Long): MyInformationResponse {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
         return MyInformationResponse(user.studentId, user.nickname)
     }
 
     @Transactional(readOnly = true)
     fun checkPasswordForMyPage(password: String, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         if (!passwordEncoder.matches(password, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
@@ -46,7 +47,7 @@ class UserService(
 
     fun updatePassword(updatePasswordRequest: UpdatePasswordRequest, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         if (!passwordEncoder.matches(updatePasswordRequest.oldPassword, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
@@ -57,7 +58,7 @@ class UserService(
 
     fun updateNickname(updateNicknameRequest: UpdateNicknameRequest, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         user.updateNickname(updateNicknameRequest.nickname)
         userRepository.save(user)
@@ -69,7 +70,7 @@ class UserService(
 
     fun signIn(signInRequest: SignInRequest): SignInResponse {
         val user = userRepository.findByStudentId(signInRequest.studentId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         if (!passwordEncoder.matches(signInRequest.password, user.password))
             throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
