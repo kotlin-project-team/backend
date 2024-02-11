@@ -40,13 +40,13 @@ class PostService(
     fun getPostById(postId: Long): GetPostByIdResponse? {
         val post = this.getPost(postId)
 
-        return postMapper.toPostResponse(post)
+        return postMapper.toGetPostByIdResponse(post)
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NotFoundException()
-        val post = postMapper.convertCreatePostReqDtoToEntity(user, postCreateRequest)
+        val post = postMapper.toPost(user, postCreateRequest)
 
         return postRepository.save(post).id
     }

@@ -27,7 +27,7 @@ class UserService(
 ) {
 
     fun createUser(userCreateRequest: CreateUserRequest): Long? {
-        val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest, passwordEncoder)
+        val user = userMapper.toUser(userCreateRequest, passwordEncoder)
 
         return userRepository.save(user).id
     }

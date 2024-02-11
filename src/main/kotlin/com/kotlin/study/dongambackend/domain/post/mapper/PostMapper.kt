@@ -6,7 +6,6 @@ import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCateg
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import com.kotlin.study.dongambackend.domain.post.dto.response.UserInformation
 import com.kotlin.study.dongambackend.domain.post.entity.Post
-import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.user.entity.User
 
 import org.springframework.stereotype.Component
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component
 class PostMapper {
 
     // TODO: null 값에 대한 예외처리
-    fun convertCreatePostReqDtoToEntity(user: User, createRequest: PostCreateRequest): Post {
+    fun toPost(user: User, createRequest: PostCreateRequest): Post {
         return Post(
             user,
             createRequest.title ?: "",
@@ -28,7 +27,7 @@ class PostMapper {
         return GetAllPostByCategoryResponse(posts, postCount)
     }
 
-    fun toPostResponse(post: Post): GetPostByIdResponse? {
+    fun toGetPostByIdResponse(post: Post): GetPostByIdResponse? {
         val userInformation = toUser(post.userId)
 
         return post.id?.let {
