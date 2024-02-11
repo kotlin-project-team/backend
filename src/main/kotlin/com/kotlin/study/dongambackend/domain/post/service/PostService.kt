@@ -1,12 +1,12 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
-import com.kotlin.study.dongambackend.domain.post.entity.Post
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import com.kotlin.study.dongambackend.domain.post.repository.PostLikeRepository
@@ -45,14 +45,14 @@ class PostService(
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
         val post = postMapper.convertCreatePostReqDtoToEntity(user, postCreateRequest)
         return postRepository.save(post).id
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
         val post = postRepository.findByIdOrNull(postId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
