@@ -9,5 +9,5 @@ enum class ResponseStatusType(val code: Int, val statusMessage: String) {
     ID_NOT_FOUND(404, "postId Not Found"),
     NOT_FOUND(404, "Not Found"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
-    PASSWORD_MISMATCH(401, "Password Mismatch")
+    PASSWORD_MISMATCH(400, "Password Mismatch")
 }
