@@ -32,6 +32,7 @@ class PostService(
     fun getAllPost(pageable: Pageable, category: BoardCategory): GetAllPostByCategoryResponse {
         val result = postQueryDslRepository.findAllPost(pageable, category)
         val postCount = postRepository.findCountByCategory(category.toString())
+
         return postMapper.toGetAllPostResponse(result, postCount)
     }
 
@@ -47,6 +48,7 @@ class PostService(
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NotFoundException()
         val post = postMapper.convertCreatePostReqDtoToEntity(user, postCreateRequest)
+
         return postRepository.save(post).id
     }
 
