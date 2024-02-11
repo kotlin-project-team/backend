@@ -1,5 +1,7 @@
 package com.kotlin.study.dongambackend.domain.post.controller
 
+import com.kotlin.study.dongambackend.common.dto.BaseResponse
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.post.validator.ValidateCategory
 import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
@@ -27,15 +29,15 @@ class PostController(private val postService: PostService) {
         pageable: Pageable,
         @RequestParam(value = "category", required = true)
         @ValidateCategory(enumClass = BoardCategory::class) category: BoardCategory
-    ): ResponseEntity<GetAllPostByCategoryResponse> {
+    ): ResponseEntity<BaseResponse<GetAllPostByCategoryResponse>> {
         val posts = postService.getAllPost(pageable, category)
-        return ResponseEntity.ok().body(posts)
+        return BaseResponse(ResponseStatusType.SUCCESS, posts).convert()
     }
 
     @GetMapping("/{postId}")
-    fun getPostById(@PathVariable postId: Long): ResponseEntity<GetPostByIdResponse> {
+    fun getPostById(@PathVariable postId: Long): ResponseEntity<BaseResponse<GetPostByIdResponse?>> {
         val post = postService.getPostById(postId)
-        return ResponseEntity.ok().body(post)
+        return BaseResponse(ResponseStatusType.SUCCESS, post).convert()
     }
 
     @PostMapping
@@ -46,15 +48,18 @@ class PostController(private val postService: PostService) {
     }
 
     @PatchMapping("/{postId}")
-    fun updatePost(@Valid @RequestBody postUpdateRequest: PostUpdateRequest, @PathVariable postId: Long): ResponseEntity<Unit> {
+    fun updatePost(
+        @Valid @RequestBody postUpdateRequest: PostUpdateRequest,
+        @PathVariable postId: Long
+    ): ResponseEntity<BaseResponse<Unit>> {
         postService.updatePost(postUpdateRequest, postId)
-        return ResponseEntity.ok().build()
+        return BaseResponse<Unit>(ResponseStatusType.SUCCESS).convert()
     }
 
     @DeleteMapping("/{postId}")
-    fun deletePost(@PathVariable postId: Long): ResponseEntity<Unit> {
+    fun deletePost(@PathVariable postId: Long): ResponseEntity<BaseResponse<Unit>> {
         postService.deletePost(postId)
-        return ResponseEntity.ok().build()
+        return BaseResponse<Unit>(ResponseStatusType.SUCCESS).convert()
     }
 
     @PostMapping("/like/{postId}")
