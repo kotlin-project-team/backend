@@ -2,6 +2,7 @@ package com.kotlin.study.dongambackend.domain.comment.service
 
 
 import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
@@ -43,9 +44,9 @@ class CommentService(
 
     fun createComment(commentCreateRequest: CommentCreateRequest, postId: Long, userId: Long? = 1L): Long? {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
         val post = postRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
         val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, post, commentCreateRequest)
         return commentRepository.save(comment).id
@@ -53,10 +54,9 @@ class CommentService(
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
         val comment = commentRepository.findByIdOrNull(commentId)
-            ?: throw BaseException(ResponseStatusType.BAD_REQUEST)
+            ?: throw NotFoundException()
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        comment.postId ?: throw BaseException(ResponseStatusType.NOT_FOUND)
         comment.updateComment(commentUpdateRequest)
         commentRepository.save(comment)
 
@@ -65,10 +65,10 @@ class CommentService(
 
     fun deleteComment(commentId: Long) {
         val comment = commentRepository.findByIdOrNull(commentId)
-            ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+            ?: throw NotFoundException()
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        val commentIdToDelete = comment.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+        val commentIdToDelete = comment.id ?: throw NotFoundException()
         commentRepository.deleteById(commentIdToDelete)
     }
 

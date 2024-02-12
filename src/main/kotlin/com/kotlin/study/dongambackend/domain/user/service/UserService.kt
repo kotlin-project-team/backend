@@ -1,5 +1,7 @@
 package com.kotlin.study.dongambackend.domain.user.service
 
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.user.dto.request.SignInRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdateNicknameRequest
 import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequest
@@ -10,6 +12,7 @@ import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchE
 import com.kotlin.study.dongambackend.domain.user.mapper.UserMapper
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
 import com.kotlin.study.dongambackend.security.util.TokenProvider
+
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -24,40 +27,36 @@ class UserService(
 ) {
 
     fun createUser(userCreateRequest: CreateUserRequest): Long? {
-        val user = userMapper.convertCreateUserReqDtoToEntity(userCreateRequest, passwordEncoder)
+        val user = userMapper.toUser(userCreateRequest, passwordEncoder)
+
         return userRepository.save(user).id
     }
 
     @Transactional(readOnly = true)
     fun getMyInformation(userId: Long): MyInformationResponse {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+        val user = this.getUser(userId)
+
         return MyInformationResponse(user.studentId, user.nickname)
     }
 
     @Transactional(readOnly = true)
     fun checkPasswordForMyPage(password: String, userId: Long) {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+        val user = this.getUser(userId)
 
-        if (!passwordEncoder.matches(password, user.password))
-            throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+        this.checkPassword(password, user.password)
     }
 
     fun updatePassword(updatePasswordRequest: UpdatePasswordRequest, userId: Long) {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+        val user = this.getUser(userId)
 
-        if (!passwordEncoder.matches(updatePasswordRequest.oldPassword, user.password))
-            throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+        this.checkPassword(updatePasswordRequest.oldPassword, user.password)
 
         user.updatePassword(updatePasswordRequest.newPassword, passwordEncoder)
         userRepository.save(user)
     }
 
     fun updateNickname(updateNicknameRequest: UpdateNicknameRequest, userId: Long) {
-        val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
+        val user = this.getUser(userId)
 
         user.updateNickname(updateNicknameRequest.nickname)
         userRepository.save(user)
@@ -69,10 +68,9 @@ class UserService(
 
     fun signIn(signInRequest: SignInRequest): SignInResponse {
         val user = userRepository.findByStudentId(signInRequest.studentId)
-            ?: throw NoSuchElementException()
+            ?: throw NotFoundException()
 
-        if (!passwordEncoder.matches(signInRequest.password, user.password))
-            throw PasswordNotMisMatchException("비밀번호가 일치하지 않습니다.")
+        this.checkPassword(signInRequest.password, user.password)
 
         val accessToken = tokenProvider.createAccessToken(user.role.toString(), user.id!!)
         val refreshToken = tokenProvider.createRefreshToken(user.role.toString(), user.id!!)
@@ -84,5 +82,14 @@ class UserService(
             accessToken,
             refreshToken
         )
+    }
+
+    private fun getUser(userId: Long) = userRepository.findByIdOrNull(userId)
+        ?: throw NotFoundException()
+
+    private fun checkPassword(inputPassword: String, password: String) {
+        if (!passwordEncoder.matches(inputPassword, password)) {
+            throw PasswordNotMisMatchException(ResponseStatusType.PASSWORD_MISMATCH)
+        }
     }
 }

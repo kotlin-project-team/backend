@@ -1,7 +1,6 @@
 package com.kotlin.study.dongambackend.domain.user.exception
 
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ResponseStatus
+import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-class PasswordNotMisMatchException(message: String) : Exception(message)
+class PasswordNotMisMatchException(statusType: ResponseStatusType) : BaseException(statusType)

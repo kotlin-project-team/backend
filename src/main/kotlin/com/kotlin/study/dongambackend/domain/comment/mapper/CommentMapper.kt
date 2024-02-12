@@ -24,5 +24,4 @@ class CommentMapper {
     fun convertCreateCommentReqDtoToEntity(user: User, post: Post, createRequest: CommentCreateRequest): Comment {
         return Comment(user, post, createRequest.content)
     }
-
 }
