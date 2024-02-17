@@ -21,7 +21,7 @@ class Notice(
     val userId: Long,
 
     @NotNull
-    var title: String?,
+    var title: String,
 
     var content: String?,
 

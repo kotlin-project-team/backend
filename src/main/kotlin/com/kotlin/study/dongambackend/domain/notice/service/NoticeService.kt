@@ -6,9 +6,11 @@ import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequ
 import com.kotlin.study.dongambackend.domain.notice.entity.Notice
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeRepository
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
+import com.kotlin.study.dongambackend.domain.notice.dto.response.GetNoticeByIdResponse
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.notice.mapper.NoticeMapper
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -49,4 +51,13 @@ class NoticeService(
     fun getAllNotice(pageable: Pageable): List<NoticeCategoryFreeResponse> {
         return noticeQueryDslRepository.findAllPost(pageable)
     }
+
+    @Transactional(readOnly = true)
+    fun getNotice(noticeId: Long): GetNoticeByIdResponse? {
+        val notice = noticeRepository.findByIdOrNull(noticeId)
+            ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+
+        return noticeMapper.toNoticeResponse(notice)
+    }
+
 }
