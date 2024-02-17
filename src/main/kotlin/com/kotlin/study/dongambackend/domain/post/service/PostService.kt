@@ -1,11 +1,12 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
-import com.kotlin.study.dongambackend.domain.post.entity.Post
+import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import com.kotlin.study.dongambackend.domain.post.entity.PostLike
 import com.kotlin.study.dongambackend.domain.post.mapper.PostMapper
 import com.kotlin.study.dongambackend.domain.post.repository.PostLikeRepository
@@ -31,45 +32,47 @@ class PostService(
     fun getAllPost(pageable: Pageable, category: BoardCategory): GetAllPostByCategoryResponse {
         val result = postQueryDslRepository.findAllPost(pageable, category)
         val postCount = postRepository.findCountByCategory(category.toString())
+
         return postMapper.toGetAllPostResponse(result, postCount)
     }
 
     @Transactional(readOnly = true)
-    fun getPostById(postId: Long): Post? {
-        return postRepository.findByIdOrNull(postId)
-            ?: throw NoSuchElementException()
+    fun getPostById(postId: Long): GetPostByIdResponse? {
+        val post = this.getPost(postId)
+
+        return postMapper.toGetPostByIdResponse(post)
     }
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NoSuchElementException()
-        val post = postMapper.convertCreatePostReqDtoToEntity(user, postCreateRequest)
+            ?: throw NotFoundException()
+        val post = postMapper.toPost(user, postCreateRequest)
+
         return postRepository.save(post).id
     }
 
     fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
-        val post = postRepository.findByIdOrNull(postId)
-            ?: throw NoSuchElementException()
+        val post = this.getPost(postId)
+
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
 
     fun deletePost(postId: Long) {
-        if (isExistedPost(postId)) {
-            postRepository.deleteById(postId)
-        }
+        this.getPost(postId)
+
+        postRepository.deleteById(postId)
     }
 
     fun clickPostLike(postId: Long, userId: Long) {
-        if (isExistedPost(postId)) {
-            val postLike = postLikeRepository.findById(userId, postId)
-                ?: PostLike(PostLikeId(userId, postId))
-            postLike.updatePostLike()
-            postLikeRepository.save(postLike)
-        }
+        this.getPost(postId)
+
+        val postLike = postLikeRepository.findById(userId, postId)
+            ?: PostLike(PostLikeId(userId, postId))
+        postLike.updatePostLike()
+        postLikeRepository.save(postLike)
     }
 
-    private fun isExistedPost(postId: Long): Boolean {
-        return postRepository.findById(postId).isPresent
-    }
+    private fun getPost(postId: Long) = postRepository.findByIdOrNull(postId)
+        ?: throw NotFoundException()
 }

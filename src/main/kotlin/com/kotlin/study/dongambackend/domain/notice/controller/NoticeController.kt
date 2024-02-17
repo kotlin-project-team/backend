@@ -1,17 +1,18 @@
 package com.kotlin.study.dongambackend.domain.notice.controller
 
-
 import com.kotlin.study.dongambackend.common.dto.BaseResponse
-import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.service.NoticeService
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
+
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+
 import java.net.URI
+
 import java.util.*
 
 @RestController
@@ -30,31 +31,22 @@ class NoticeController(private val noticeService: NoticeService) {
     fun updateNotice(
         @RequestBody noticeUpdateRequest: NoticeUpdateRequest,
         @PathVariable noticeId: Long
-    // TODO globalException 고려
-    ): ResponseEntity<BaseResponse<ResponseStatus?>> {
-        return try {
-            val result = noticeService.updateNotice(noticeUpdateRequest, noticeId)
-            BaseResponse<ResponseStatus?>(ResponseStatusType.SUCCESS).convert()
-        } catch (e: BaseException) {
-            BaseResponse<ResponseStatus?>(e.status, false).convert()
-        }
+    ): ResponseEntity<BaseResponse<Unit>> {
+        noticeService.updateNotice(noticeUpdateRequest, noticeId)
+        return BaseResponse<Unit>(ResponseStatusType.SUCCESS).convert()
     }
 
     @DeleteMapping("/{noticeId}")
-    fun deleteNotice(@PathVariable noticeId: Long): ResponseEntity<BaseResponse<ResponseStatus?>> {
-        return try {
-            noticeService.deleteNotice(noticeId)
-            BaseResponse<ResponseStatus?>(ResponseStatusType.SUCCESS).convert()
-        } catch (e: BaseException) {
-            BaseResponse<ResponseStatus?>(e.status, false).convert()
-        }
+    fun deleteNotice(@PathVariable noticeId: Long): ResponseEntity<BaseResponse<Unit>> {
+        noticeService.deleteNotice(noticeId)
+        return BaseResponse<Unit>(ResponseStatusType.SUCCESS).convert()
     }
 
     @GetMapping
     fun getAllNotice(
         pageable: Pageable
-    ): ResponseEntity<List<NoticeCategoryFreeResponse>> {
+    ): ResponseEntity<BaseResponse<List<NoticeCategoryFreeResponse>>> {
         val notices = noticeService.getAllNotice(pageable)
-        return ResponseEntity.ok().body(notices)
+        return BaseResponse(ResponseStatusType.SUCCESS, notices).convert()
     }
 }

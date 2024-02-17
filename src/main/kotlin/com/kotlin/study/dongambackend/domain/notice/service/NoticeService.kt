@@ -1,6 +1,7 @@
 package com.kotlin.study.dongambackend.domain.notice.service
 
 import com.kotlin.study.dongambackend.common.exception.BaseException
+import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.entity.Notice
@@ -38,10 +39,10 @@ class NoticeService(
 
     fun deleteNotice(noticeId: Long) {
         val notice = noticeRepository.findByIdOrNull(noticeId)
-            ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+            ?: throw NotFoundException()
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        val commentIdToDelete = notice.id ?: throw BaseException(ResponseStatusType.NOT_FOUND)
+        val commentIdToDelete = notice.id ?: throw NotFoundException()
         noticeRepository.deleteById(commentIdToDelete)
     }
 
