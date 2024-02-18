@@ -8,6 +8,7 @@ import com.kotlin.study.dongambackend.domain.user.dto.request.UpdatePasswordRequ
 import com.kotlin.study.dongambackend.domain.user.dto.request.CreateUserRequest
 import com.kotlin.study.dongambackend.domain.user.dto.response.MyInformationResponse
 import com.kotlin.study.dongambackend.domain.user.dto.response.SignInResponse
+import com.kotlin.study.dongambackend.domain.user.entity.User
 import com.kotlin.study.dongambackend.domain.user.exception.PasswordNotMisMatchException
 import com.kotlin.study.dongambackend.domain.user.mapper.UserMapper
 import com.kotlin.study.dongambackend.domain.user.repository.UserRepository
@@ -25,6 +26,10 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val tokenProvider: TokenProvider
 ) {
+
+    fun loadUserById(userId: Long): User {
+        return userRepository.findById(userId).orElseThrow()
+    }
 
     fun createUser(userCreateRequest: CreateUserRequest): Long? {
         val user = userMapper.toUser(userCreateRequest, passwordEncoder)
