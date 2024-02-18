@@ -7,25 +7,29 @@ import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRe
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
+import com.kotlin.study.dongambackend.domain.user.entity.User
+import org.slf4j.LoggerFactory
 
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 import java.net.URI
 
-import java.util.*
+
 
 @RestController
 @RequestMapping("/api/post/{postId}/comment")
 class CommentController(private val commentService: CommentService) {
-
+    private val log = LoggerFactory.getLogger(CommentController::class.java)
     @PostMapping
     fun createComment(
         @PathVariable postId: Long,
-        @RequestBody commentCreateRequest: CommentCreateRequest
+        @RequestBody commentCreateRequest: CommentCreateRequest,
+        @AuthenticationPrincipal user: User
     ): ResponseEntity<Unit> {
-        val commentId = commentService.createComment(commentCreateRequest, postId)
+        val commentId = commentService.createComment(commentCreateRequest, postId, user.id)
         return ResponseEntity.created(URI.create("/api/comment/${commentId}")).build()
     }
 

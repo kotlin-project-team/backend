@@ -42,10 +42,10 @@ class CommentService(
         return checkLastPage(pageable, commentResponses)
     }
 
-    fun createComment(commentCreateRequest: CommentCreateRequest, postId: Long, userId: Long? = 1L): Long? {
+    fun createComment(commentCreateRequest: CommentCreateRequest, postId: Long, userId: Long?): Long? {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw NotFoundException()
-        val post = postRepository.findByIdOrNull(userId)
+        val post = postRepository.findByIdOrNull(postId)
             ?: throw NotFoundException()
 
         val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, post, commentCreateRequest)
