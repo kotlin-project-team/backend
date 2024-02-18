@@ -5,6 +5,7 @@ import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeCreateRequest
 import com.kotlin.study.dongambackend.domain.notice.service.NoticeService
 import com.kotlin.study.dongambackend.domain.notice.dto.request.NoticeUpdateRequest
+import com.kotlin.study.dongambackend.domain.notice.dto.response.GetNoticeByIdResponse
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
 
 import org.springframework.data.domain.Pageable
@@ -48,5 +49,13 @@ class NoticeController(private val noticeService: NoticeService) {
     ): ResponseEntity<BaseResponse<List<NoticeCategoryFreeResponse>>> {
         val notices = noticeService.getAllNotice(pageable)
         return BaseResponse(ResponseStatusType.SUCCESS, notices).convert()
+    }
+
+    @GetMapping("/{noticeId}")
+    fun getNoticeById(
+        @PathVariable noticeId: Long
+    ): ResponseEntity<GetNoticeByIdResponse> {
+        val notice = noticeService.getNotice(noticeId)
+        return ResponseEntity.ok().body(notice)
     }
 }
