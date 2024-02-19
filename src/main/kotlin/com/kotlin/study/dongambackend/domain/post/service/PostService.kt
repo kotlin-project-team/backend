@@ -47,7 +47,7 @@ class PostService(
 
     fun createPost(postCreateRequest: PostCreateRequest, userId: Long): Long? {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.POST_NOT_FOUND)
         val post = postMapper.toPost(user, postCreateRequest)
 
         return postRepository.save(post).id
@@ -85,5 +85,5 @@ class PostService(
     }
 
     private fun getPost(postId: Long) = postRepository.findByIdOrNull(postId)
-        ?: throw NotFoundException()
+        ?: throw NotFoundException(ResponseStatusType.POST_NOT_FOUND)
 }

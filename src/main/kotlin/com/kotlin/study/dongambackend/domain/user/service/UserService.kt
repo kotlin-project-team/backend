@@ -73,7 +73,7 @@ class UserService(
 
     fun signIn(signInRequest: SignInRequest): SignInResponse {
         val user = userRepository.findByStudentId(signInRequest.studentId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.USER_NOT_FOUND)
 
         this.checkPassword(signInRequest.password, user.password)
 
@@ -90,7 +90,7 @@ class UserService(
     }
 
     private fun getUser(userId: Long) = userRepository.findByIdOrNull(userId)
-        ?: throw NotFoundException()
+        ?: throw NotFoundException(ResponseStatusType.USER_NOT_FOUND)
 
     private fun checkPassword(inputPassword: String, password: String) {
         if (!passwordEncoder.matches(inputPassword, password)) {

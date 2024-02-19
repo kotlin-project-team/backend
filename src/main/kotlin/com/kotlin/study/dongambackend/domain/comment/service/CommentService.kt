@@ -1,7 +1,5 @@
 package com.kotlin.study.dongambackend.domain.comment.service
 
-
-import com.kotlin.study.dongambackend.common.exception.BaseException
 import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
 import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRequest
@@ -44,9 +42,9 @@ class CommentService(
 
     fun createComment(commentCreateRequest: CommentCreateRequest, postId: Long, userId: Long?): Long? {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.COMMENT_NOT_FOUND)
         val post = postRepository.findByIdOrNull(postId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.COMMENT_NOT_FOUND)
 
         val comment = commentMapper.convertCreateCommentReqDtoToEntity(user, post, commentCreateRequest)
         return commentRepository.save(comment).id
@@ -54,7 +52,7 @@ class CommentService(
 
     fun updateComment(commentUpdateRequest: CommentUpdateRequest, commentId: Long): Comment {
         val comment = commentRepository.findByIdOrNull(commentId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.COMMENT_NOT_FOUND)
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
         comment.updateComment(commentUpdateRequest)
@@ -65,10 +63,10 @@ class CommentService(
 
     fun deleteComment(commentId: Long) {
         val comment = commentRepository.findByIdOrNull(commentId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.COMMENT_NOT_FOUND)
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        val commentIdToDelete = comment.id ?: throw NotFoundException()
+        val commentIdToDelete = comment.id ?: throw NotFoundException(ResponseStatusType.COMMENT_NOT_FOUND)
         commentRepository.deleteById(commentIdToDelete)
     }
 
