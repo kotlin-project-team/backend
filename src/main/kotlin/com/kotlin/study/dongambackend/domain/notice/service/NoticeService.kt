@@ -11,7 +11,7 @@ import com.kotlin.study.dongambackend.domain.notice.dto.response.GetNoticeByIdRe
 import com.kotlin.study.dongambackend.domain.notice.dto.response.NoticeCategoryFreeResponse
 import com.kotlin.study.dongambackend.domain.notice.mapper.NoticeMapper
 import com.kotlin.study.dongambackend.domain.notice.repository.NoticeQueryDslRepository
-import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
+
 import lombok.extern.slf4j.Slf4j
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -41,10 +41,10 @@ class NoticeService(
 
     fun deleteNotice(noticeId: Long) {
         val notice = noticeRepository.findByIdOrNull(noticeId)
-            ?: throw NotFoundException()
+            ?: throw NotFoundException(ResponseStatusType.NOTICE_NOT_FOUND)
 
         // TODO: Unauthorized 및 ForbiddenToken 처리
-        val commentIdToDelete = notice.id ?: throw NotFoundException()
+        val commentIdToDelete = notice.id ?: throw NotFoundException(ResponseStatusType.NOTICE_NOT_FOUND)
         noticeRepository.deleteById(commentIdToDelete)
     }
 

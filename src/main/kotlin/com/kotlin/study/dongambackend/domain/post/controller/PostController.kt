@@ -9,9 +9,11 @@ import com.kotlin.study.dongambackend.domain.post.dto.request.PostUpdateRequest
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetAllPostByCategoryResponse
 import com.kotlin.study.dongambackend.domain.post.dto.response.GetPostByIdResponse
 import com.kotlin.study.dongambackend.domain.post.service.PostService
+import com.kotlin.study.dongambackend.domain.user.entity.User
 
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 import java.net.URI
@@ -41,14 +43,17 @@ class PostController(private val postService: PostService) {
     }
 
     @PostMapping
-    fun createPost(@Valid @RequestBody postCreateRequest: PostCreateRequest): ResponseEntity<Unit> {
-        val userId = 1L
-        val postId = postService.createPost(postCreateRequest, userId)
+    fun createPost(
+        @AuthenticationPrincipal user: User,
+        @Valid @RequestBody postCreateRequest: PostCreateRequest
+    ): ResponseEntity<Unit> {
+        val postId = postService.createPost(postCreateRequest, user.id ?: 0L)
         return ResponseEntity.created(URI.create("/api/post/${postId}")).build()
     }
 
     @PatchMapping("/{postId}")
     fun updatePost(
+        @AuthenticationPrincipal user: User,
         @Valid @RequestBody postUpdateRequest: PostUpdateRequest,
         @PathVariable postId: Long
     ): ResponseEntity<BaseResponse<Unit>> {
