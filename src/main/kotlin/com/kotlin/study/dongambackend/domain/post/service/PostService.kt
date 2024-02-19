@@ -1,6 +1,8 @@
 package com.kotlin.study.dongambackend.domain.post.service
 
+import com.kotlin.study.dongambackend.common.exception.common.ForbiddenException
 import com.kotlin.study.dongambackend.common.exception.common.NotFoundException
+import com.kotlin.study.dongambackend.common.type.ResponseStatusType
 import com.kotlin.study.dongambackend.domain.post.validator.type.BoardCategory
 import com.kotlin.study.dongambackend.domain.post.entity.id.PostLikeId
 import com.kotlin.study.dongambackend.domain.post.dto.request.PostCreateRequest
@@ -51,15 +53,24 @@ class PostService(
         return postRepository.save(post).id
     }
 
-    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long) {
+    fun updatePost(postUpdateRequest: PostUpdateRequest, postId: Long, userId: Long? = 0L) {
         val post = this.getPost(postId)
+
+        // TODO: 인터셉터 추가
+        if (post.userId.id != userId) {
+            throw ForbiddenException(ResponseStatusType.POST_FORBIDDEN)
+        }
 
         post.updatePost(postUpdateRequest)
         postRepository.save(post)
     }
 
-    fun deletePost(postId: Long) {
-        this.getPost(postId)
+    fun deletePost(postId: Long, userId: Long? = 0L) {
+        val post = this.getPost(postId)
+
+        if (post.userId.id != userId) {
+            throw ForbiddenException(ResponseStatusType.POST_FORBIDDEN)
+        }
 
         postRepository.deleteById(postId)
     }

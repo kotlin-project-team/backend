@@ -9,5 +9,6 @@ enum class ResponseStatusType(val code: Int, val statusMessage: String) {
     ID_NOT_FOUND(404, "postId Not Found"),
     NOT_FOUND(404, "Not Found"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
-    PASSWORD_MISMATCH(400, "Password Mismatch")
+    PASSWORD_MISMATCH(400, "Password Mismatch"),
+    POST_FORBIDDEN(403, "해당 게시물에 대한 수정 및 삭제 권한이 없습니다.");
 }
