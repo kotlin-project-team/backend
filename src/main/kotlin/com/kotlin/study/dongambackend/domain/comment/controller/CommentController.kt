@@ -6,6 +6,7 @@ import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentCreateRe
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentReportRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.request.CommentUpdateRequest
 import com.kotlin.study.dongambackend.domain.comment.dto.response.CommentResponse
+import com.kotlin.study.dongambackend.domain.comment.dto.response.FindAllCommentResponse
 import com.kotlin.study.dongambackend.domain.comment.service.CommentService
 import com.kotlin.study.dongambackend.domain.user.entity.User
 import org.slf4j.LoggerFactory
@@ -67,9 +68,9 @@ class CommentController(private val commentService: CommentService) {
         @PathVariable postId: Long,
         @RequestParam lastCommentId: Long,
         pageable: Pageable
-    ): ResponseEntity<List<CommentResponse>> {
-        val commentsSlice = commentService.getAllComment(lastCommentId, pageable)
-        val comments = commentsSlice.content // Slice에서 content만 추출
-        return ResponseEntity.ok().body(comments)
+    ): ResponseEntity<BaseResponse<List<FindAllCommentResponse>>> {
+        val commentsSlice = commentService.getAllComment(postId, lastCommentId, pageable)
+        val comments = commentsSlice.content
+        return BaseResponse(ResponseStatusType.SUCCESS, comments).convert()
     }
 }
